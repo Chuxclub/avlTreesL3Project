@@ -97,3 +97,17 @@ let avgSeriesDesequilibre(sampleSize, treeSize, seriesLenMode : int * int * char
   | _ -> failwith("Wrong mode for series length... 'r' for random lengths, 'f' for fixed lengths, 'a' for ascending lengths, and 'd' for descending lengths."); 
 ;;
  *)
+
+
+(*let rec size(tree : 'a t_btree) : int =
+
+  if(isEmpty(tree))
+  then 0
+
+  else
+    (
+      let l : 'a t_btree = lson(tree) in
+      let r : 'a t_btree = rson(tree) in
+      1 + size(l) + size(r);
+    )
+;;*)

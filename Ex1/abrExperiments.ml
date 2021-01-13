@@ -1,9 +1,5 @@
-#load "btree.cmo";;
-#load "bst.cmo";;
-open Bst;;
-open Btree;;
-(* #show Bst;;
-#show Btree;; *)
+open Btree
+open Bst
 
 (* =========================================================================================== *)
 (* ======================================== Exercice 1 ======================================= *)
@@ -28,11 +24,6 @@ let bst_rnd_create(bound, treeSize : int * int) : int bst =
 
   !randABR
 ;;
-
-
-(* -> Test <- *)
-
-show_int_btree(bst_rnd_create(100, 20));;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
@@ -69,7 +60,6 @@ let rec height(tree : 'a t_btree) : int =
     )
 ;;
 
-
 (* -> Main <- *)
 
 let desequilibre(tree : 'a t_btree) : int =
@@ -88,6 +78,7 @@ let avgDesequilibre(sampleSize, treeSize : int * int) : float =
   !sum /. float_of_int(sampleSize)
 ;;
 
+
 let avgAvgDesequilibre(nbAvgs, sampleSize, treeSize : int * int * int) : float =
   
   let sum : float ref = ref 0. in
@@ -98,13 +89,6 @@ let avgAvgDesequilibre(nbAvgs, sampleSize, treeSize : int * int * int) : float =
 
   !sum /. float_of_int(nbAvgs)
 ;;
-
-
-(* -> Test <- *)
-
-avgDesequilibre(1000, 10);;
-avgAvgDesequilibre(100, 100, 100);;
-
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 
@@ -171,47 +155,4 @@ let avgAvgSeriesDesequilibre(nbAvgs, sampleSize, treeSize, seriesLenMode : int *
   !sum /. float_of_int(nbAvgs)
 ;;
 
-
-(* -> Test <- *)
-
-(* show_int_btree(bst_rndSeries_create(20, 3));;*) 
-(* desequilibre(bst_rndSeries_create(10, 1));; *)
-
-(*avgSeriesDesequilibre(1000, 100, 'r');;
-avgSeriesDesequilibre(100, 100, 'f');;
-avgSeriesDesequilibre(100, 100, 'a');;
-avgSeriesDesequilibre(100, 100, 'd');;
-avgSeriesDesequilibre(100, 100, 'e');;*)
-
-avgAvgSeriesDesequilibre(100, 100, 100, 'r');;
-avgAvgSeriesDesequilibre(100, 100, 100, 'f');;
-avgAvgSeriesDesequilibre(100, 100, 100, 'a');;
-avgAvgSeriesDesequilibre(100, 100, 100, 'd');;
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-
-
-
-(* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (4) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-(* 
-   Compte-rendu d'expérimentation : 
-   https://fr.overleaf.com/read/jsvdspcwzjjd
- *)
-
-(* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-
-(* 
-   QUESTIONS POUR L'ENSEIGNANT:
-   ----------------------------
-
-   1) Moyenne de moyennes?
-   2) ABR avec doublons ou sans?
-   3) Valeurs attendues (notamment moyennes souvent positives dans le 
-      cas de random) ?
-   4) Récursivité ou itérativité pour les fonctions?
-   5) Fonctions auxiliaires dans des modules ou ici?
-   6) Noms de fonctions (cf. avgAvg...) ?
-   7) Complexité des fonctions d'expérimentations prises en compte?
- *)
