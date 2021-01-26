@@ -33,8 +33,8 @@ avgAvgDesequilibre(100, 100, 100);;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-(* show_int_btree(bst_rndSeries_create(20, 3));;*) 
-(* desequilibre(bst_rndSeries_create(10, 1));; *)
+(* show_int_btree(bst_rndSeries_create(20, 3));; *)
+(* desequilibre(bst_rndSeries_create(10, 2));; *)
 
 (*avgSeriesDesequilibre(1000, 100, 'r');;
 avgSeriesDesequilibre(100, 100, 'f');;

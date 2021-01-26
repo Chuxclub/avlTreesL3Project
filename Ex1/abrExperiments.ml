@@ -36,7 +36,11 @@ let bst_rnd_create(bound, treeSize : int * int) : int bst =
 (* -> Auxiliaries <- *)
 
 let isLeaf(tree: 'a t_btree) : bool =
-  isEmpty(lson(tree)) && isEmpty(rson(tree))
+  if(isEmpty(tree))
+  then failwith("Function isLeaf, tree is empty")
+
+  else
+    isEmpty(lson(tree)) && isEmpty(rson(tree))
 ;;
 
 let max(a, b : int * int) : int =
@@ -63,7 +67,11 @@ let rec height(tree : 'a t_btree) : int =
 (* -> Main <- *)
 
 let desequilibre(tree : 'a t_btree) : int =
-  height(lson(tree)) - height(rson(tree))
+  if(isEmpty(tree))
+  then 0
+
+  else
+    height(lson(tree)) - height(rson(tree))
 ;;
 
 
