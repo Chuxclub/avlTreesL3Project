@@ -102,61 +102,6 @@ let desequilibre(tree : 'a t_btree) : int =
 
 
 
-(*
-module type AVLtree = 
-  sig
-    type 'a avltree 
-    val empty : unit -> 'a avltree
-    val rooting : 'a * 'a avltree * 'a avltree * int-> 'a avltree
-    val root : 'a avltree -> 'a
-    val lson : 'a avltree -> 'a avltree
-    val rson : 'a avltree -> 'a avltree
-    val unbal : 'a avltree -> int
-    val isEmpty : 'a avltree -> bool
-  end
-
-module MyAVLtree : AVLtree =
-  struct
-    
-    type 'a avltree =
-      | AVLnil
-      | AVLnode of 'a * 'a avltree * 'a avltree * int
-
-               
-    let empty() : 'a avltree = AVLnil
-                           
-    let rooting(v, l, r, u : 'a * 'a avltree * 'a avltree * int) : 'a avltree = AVLnode(v, l, r, u)
-                                                               
-    let root(t : 'a avltree) : 'a =
-      match t with
-      | AVLnil -> failwith("tree is empty")
-      | AVLnode(v, l, r, u) -> v
-                                                       
-    let lson(t : 'a avltree) : 'a avltree =
-      match t with
-      | AVLnil -> failwith("tree is empty")
-      | AVLnode(v, l, r, u) -> l
-                                                    
-    let rson(t : 'a avltree) : 'a avltree =
-      match t with
-      | AVLnil -> failwith("tree is empty")
-      | AVLnode(v, l, r, u) -> r
-
-    let unbal(t : 'a avltree) : int =
-      match t with
-      | AVLnil -> failwith("tree is empty")
-      | AVLnode(v, l, r, u) -> u
-                                                    
-    let isEmpty(t : 'a avltree) : bool =
-      t = AVLnil
-      
-  end
-
-
-  *)
-
-
-
 (*en supposant que le desequilibre ne soit pas stocké*)
 let reequilibrer(a : 'a bst) : 'a bst = 
   if(desequilibre(a)==0||desequilibre(a)==1||desequilibre(a)== -1)
@@ -183,6 +128,39 @@ let reequilibrer(a : 'a bst) : 'a bst =
         )
     )
 ;;
+ 
+
+
+(*en supposant que le desequilibre soit stocké*)
+let reequilibrer2(a :  ('a * int) t_btree) : ('a * int) t_btree =
+  let (rt,unbal): ('a * int) = root(a)
+  and (rl,unball): ('a *int) = root(lson(a))
+  and (rr,unbalr): ('a *int) = root(rson(a)) in
+  if(unbal== 0 || unbal== 1 || unbal== -1)
+  then a
+  else
+    (
+      if(unbal== 2 && unball==1)
+      then r_rotate(a)
+      else
+        (
+          if(unbal == 2 && unball== -1)
+          then lr_rotate(a)
+          else
+            (
+              if(unbal == -2 && unbalr== -1)
+              then l_rotate(a)
+              else
+                (
+                  if(unbal == -2 && unbalr==1)
+                  then rl_rotate(a)
+                  else failwith("error")
+                )
+            )
+        )
+    )
+;;
+
 
 let rec ajt_avl(e, a : 'a * 'a bst) : 'a bst =
   if(isEmpty(a))
@@ -205,13 +183,68 @@ let rec ajt_avl(e, a : 'a * 'a bst) : 'a bst =
 ;;
 
 
+let rec avl_dmax(t : 'a bst) : 'a * 'a bst =
+  
+  if isEmpty(rson(t))
+  then (root(t), lson(t))
+  
+  else
+    let (v, newrst) : 'a * 'a bst = avl_dmax(rson(t))
+    in
+    (v, reequilibrer(rooting(root(t), lson(t), newrst)))
+;;
 
 
+let rec suppr_avl(e, a : 'a * 'a bst) : 'a bst =
+  if(isEmpty(a))
+  then rooting(e,empty(),empty())
+  else
+    (
+      let (v,fg,fd) : ('a * 'a bst * 'a bst) = (root(a),lson(a),rson(a))
+      in
 
+      if(e < v) then reequilibrer(rooting(v, suppr_avl(e, fg), fd))
+      else
+        (
+          if(e > v) then reequilibrer(rooting(v, fg, suppr_avl(e, fd)))
+          else
+            (
+              if(e = v && isEmpty(fd)) then fg
+              else
+                (
+                  if(e = v && not(isEmpty(fd)) && isEmpty(fg)) then fd
+                  else
+                    (
+                      let (max,dmax) : ('a * 'a bst) = avl_dmax(fg) in
+                      reequilibrer(rooting(max, dmax, fd))
+                    )
+                )
+            )
+        
+        )
+    )
+;;
+
+
+(*
+let rec suppr_avl1(e, a : 'a * 'a bst) : 'a bst =
+  (* let (v,fg,fd) : ('a * 'a bst * 'a bst) = (root(a),lson(a),rson(a)) in*)
+  match (e,a) with
+  | suppr_avl1(e, rooting(v, g, d)) when e < v -> reequilibrer(rooting(v, suppr_avl1(e, g), d))
+  | suppr_avl1(e, rooting(v, g ,d)) when e > v -> reequilibrer(rooting(v, g, suppr_avl1(e, d)))
+  | suppr_avl1(e, rooting(v, g, empty)) when e = v  -> g
+  | suppr_avl1(e, rooting(v, empty, d)) when e = v && not(isEmpty(d)) -> d
+  | suppr_avl1(e, rooting(v, g, d)) when e = v && not(isEmpty(g)) && not(isEmpty(d)) ->
+     let (max,dmax) : ('a * 'a bst) = avl_dmax(g) in
+     reequilibrer(rooting(max, dmax, d))
+;;
+ *)
 
 5;;
 
-(*en supposant que le desequilibre soit stocké*)
+
+
+(*autre idée pour stocké le desequilibre*)
 (*
 type 'a t_btree =
       | Bnil
@@ -273,10 +306,36 @@ let reequilibrer3(a : 'a t_avltree) : 'a t_avltree =
 
 (*************************************** TEST ****************************************)
 
-let abr_1 : 'a bst = rooting("q",rooting("p",rooting("u",empty(),empty()),rooting("v",empty(),empty())),rooting("w",empty(),empty()));;
-let abr_2 : 'a bst = rooting("p",rooting("u",empty(),empty()),rooting("q",rooting("v",empty(),empty()),rooting("w",empty(),empty())));;
-let abr_3 : 'a bst = rooting("r",rooting("p",rooting("t",empty(),empty()),rooting("q",rooting("u",empty(),empty()),rooting("v",empty(),empty()))),rooting("w",empty(),empty()));;
-let abr_4 : 'a bst = rooting("r",rooting("t",empty(),empty()),rooting("p",rooting("q",rooting("u",empty(),empty()),rooting("v",empty(),empty())),rooting("w",empty(),empty())));;
+let abr_1 : 'a bst = rooting("q",
+                             rooting("p",
+                                     rooting("u",empty(),empty()),
+                                     rooting("v",empty(),empty())),
+                             rooting("w",empty(),empty()));;
+
+
+let abr_2 : 'a bst = rooting("p",
+                             rooting("u",empty(),empty()),
+                             rooting("q",
+                                     rooting("v",empty(),empty()),
+                                     rooting("w",empty(),empty())));;
+
+
+let abr_3 : 'a bst = rooting("r",
+                             rooting("p",
+                                     rooting("t",empty(),empty()),
+                                     rooting("q",
+                                             rooting("u",empty(),empty()),
+                                             rooting("v",empty(),empty()))),
+                             rooting("w",empty(),empty()));;
+
+
+let abr_4 : 'a bst = rooting("r",
+                             rooting("t",empty(),empty()),
+                             rooting("p",
+                                     rooting("q",
+                                             rooting("u",empty(),empty()),
+                                             rooting("v",empty(),empty())),
+                                     rooting("w",empty(),empty())));;
 
 (*rotation droite*)
 show_string_btree(abr_1);;
@@ -305,6 +364,23 @@ show_string_btree(abr_5);;
 let ajtabr5 : 'a bst = ajt_avl("d",abr_5);;
 show_string_btree(ajtabr5);;
 show_string_btree(ajt_avl("g",ajtabr5));;
+let ajtabr6 : 'a bst = ajt_avl("g",ajtabr5);;
+show_string_btree(ajtabr6);;
+show_string_btree(ajt_avl("m",ajtabr6));;
+
+show_string_btree(avl_dmax(ajtabr6));;
+avl_dmax(ajtabr6);;
+
+(*
+let a_test : ('a * int) bst = rooting(("q",1),
+                                      rooting(("p",1),
+                                              rooting(("u",1),empty(),empty()),
+                                              rooting(("v",1),empty(),empty())),
+                                      rooting(("w",1),empty(),empty()));;
+ *)
+show(a_test);;
+show_string_btree(a_test);;
+
 
 (*si on utilise la fonction d'ajout dans un bst sur un avl pour voir la difference*)
 show_string_btree(bst_linsert(ajtabr5, "g"));;
@@ -364,3 +440,4 @@ module MyAVLtree : AVLtree =
       
   end
  *)
+
