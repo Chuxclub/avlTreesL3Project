@@ -1,20 +1,20 @@
-#directory "../../librairies/modules_UP/4.08.1/";;
-#load "btree.cmo";;
-open Btree;;
-
-#directory "../../librairies/modules_etu/utils/";;
-#use "treeUtils.ml";;
-
-#directory "../../librairies/modules_etu/bst/";;
-#use "bst.ml";;
-
-#directory "../../librairies/modules_etu/graphiques/";;
+#directory "../../../librairies/modules_etu/graphiques/";;
 #use "AP2util.ml";;
 #load "graphics.cma";;
 #use "graphique.ml";;
 #use "AP2TP1draw.ml";;
 
-#directory "../../codes/Ex2_Florian/ex2_V2/";;
+#directory "../../../librairies/modules_UP/4.08.1/";;
+#load "btree.cmo";;
+open Btree;;
+
+#directory "../../../librairies/modules_etu/utils/";;
+#use "treeUtils.ml";;
+
+#directory "../../../librairies/modules_etu/bst/";;
+#use "bst.ml";;
+
+#directory "../../../codes/Ex2_Florian/ex2_V2/";;
 #use "ex2_V2.ml";;
 
 

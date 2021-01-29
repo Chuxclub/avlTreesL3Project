@@ -1,14 +1,14 @@
-#directory "../../librairies/modules_UP/4.08.1/";;
-#load "../../librairies/modules_UP/4.08.1/btree.cmo";;
+#directory "../../../librairies/modules_UP/4.08.1/";;
+#load "../../../librairies/modules_UP/4.08.1/btree.cmo";;
 open Btree;;
 
-#directory "../../librairies/modules_etu/bst/";;
+#directory "../../../librairies/modules_etu/bst/";;
 #use "bst.ml";;
 
-#directory "../../librairies/modules_etu/utils/";;
+#directory "../../../librairies/modules_etu/utils/";;
 #use "treeUtils.ml";;
 
-#directory "../../codes/Ex1/";;
+#directory "../../../codes/Ex1/";;
 #use "abrExperiments.ml";;
 
 

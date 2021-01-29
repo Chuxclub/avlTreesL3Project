@@ -67,21 +67,6 @@ let rec bstMax(tree : 'a t_btree) : 'a =
 ;;
 
 
-let rec bstDmax(tree : 'a t_btree) : 'a t_btree =
-  if(isEmpty(tree))
-  then failwith("Tree is empty, can't apply dmax function on an empty tree")
-
-  else
-    (
-      let (v, g, d) : ('a * 'a t_btree * 'a t_btree) = (root(tree), lson(tree), rson(tree)) in
-
-      if(isEmpty(d))
-      then g
-
-      else reequilibrer(rooting(v, g, bstDmax(d)))
-    )
-;;
-
 let rec bst_delete_max(t : 'a bst) : 'a * 'a bst =
   
   if isEmpty(rson(t))

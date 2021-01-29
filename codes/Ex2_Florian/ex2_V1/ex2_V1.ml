@@ -138,6 +138,22 @@ let rec ajt_avl(e, tree : 'a * 'a t_btree) : 'a t_btree =
 ;;
 
 
+let rec avlDmax(tree : 'a t_btree) : 'a t_btree =
+  if(isEmpty(tree))
+  then failwith("Tree is empty, can't apply dmax function on an empty tree")
+
+  else
+    (
+      let (v, g, d) : ('a * 'a t_btree * 'a t_btree) = (root(tree), lson(tree), rson(tree)) in
+
+      if(isEmpty(d))
+      then g
+
+      else reequilibrer(rooting(v, g, avlDmax(d)))
+    )
+;;
+
+
 let rec suppr_avl(e, tree : 'a * 'a t_btree) : 'a t_btree =
   if(isEmpty(tree))
   then empty()
@@ -160,7 +176,7 @@ let rec suppr_avl(e, tree : 'a * 'a t_btree) : 'a t_btree =
           else if(isEmpty(g))
           then d
 
-          else reequilibrer(rooting(bstMax(g), bstDmax(g), d))
+          else reequilibrer(rooting(bstMax(g), avlDmax(g), d))
         )
     )
 ;;
