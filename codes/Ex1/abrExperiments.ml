@@ -1,20 +1,9 @@
-#directory "../../librairies/modules_UP/4.08.1/";;
-#load "../../librairies/modules_UP/4.08.1/btree.cmo";;
-open Btree;;
-
-#directory "../../librairies/modules_etu/bst/";;
-#use "bst.ml";;
-
-
-
 (* =========================================================================================== *)
 (* ======================================== Exercice 1 ======================================= *)
 (* =========================================================================================== *)
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-(* -> Main <- *)
 
 let bst_rnd_create(bound, treeSize : int * int) : int bst =
 
@@ -38,39 +27,6 @@ let bst_rnd_create(bound, treeSize : int * int) : int bst =
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-(* -> Auxiliaries <- *)
-
-let isLeaf(tree: 'a t_btree) : bool =
-  if(isEmpty(tree))
-  then failwith("Function isLeaf, tree is empty")
-
-  else
-    isEmpty(lson(tree)) && isEmpty(rson(tree))
-;;
-
-let max(a, b : int * int) : int =
-
-  if(a > b)
-  then a
-
-  else b
-;;
-
-let rec height(tree : 'a t_btree) : int =
-
-  if(isEmpty(tree) || isLeaf(tree))
-  then 0
-
-  else
-    (
-      let l : 'a t_btree = lson(tree) in
-      let r : 'a t_btree = rson(tree) in
-      1 + max(height(l), height(r))
-    )
-;;
-
-(* -> Main <- *)
 
 let desequilibre(tree : 'a t_btree) : int =
   if(isEmpty(tree))
@@ -111,8 +67,6 @@ let avgAvgDesequilibre(nbAvgs, sampleSize, treeSize : int * int * int) : float =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-(* -> Auxiliaries <- *)
-
 let bst_rndSeries_create(treeSize, seriesLen : int * int) : int bst =
 
   Random.self_init();
@@ -137,10 +91,6 @@ let bst_rndSeries_create(treeSize, seriesLen : int * int) : int bst =
   
   !randABR
 ;;
-
-
-
-(* -> Main <- *)
 
 let avgSeriesDesequilibre(sampleSize, treeSize, seriesLenMode : int * int * char) : float =
 
