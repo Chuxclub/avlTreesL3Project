@@ -56,12 +56,12 @@ let dummy : ('a * int) t_btree = avl_rnd_create(1000, 5);;
 show_int_btree(avlToBtree(dummy));;
 deseqList(dummy);;
 
-let dummy2 : ('a * int) t_btree = ajt_avl(974, dummy);;
+let dummy2 : ('a * int) t_btree = ajt_avl(220, dummy);;
 show_int_btree(avlToBtree(dummy2));;
 deseqList(dummy2);;
 
 
-let dummy3a : ('a * int) t_btree = ajt_avl(734, dummy2);;
+let dummy3a : ('a * int) t_btree = ajt_avl(225, dummy2);;
 show_int_btree(avlToBtree(dummy3a));;
 deseqList(dummy3a);;
 
@@ -69,7 +69,7 @@ let dummy3b : ('a * int) t_btree = ajt_avl(32, dummy2);;
 show_int_btree(avlToBtree(dummy3b));;
 deseqList(dummy3b);;
 
-let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 10);;
+let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
 show_int_btree(avlToBtree(otherdummy));;
 deseqList(otherdummy);;
 
