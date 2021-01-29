@@ -84,26 +84,6 @@ let rdg(t : 'a t_btree) : 'a t_btree =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let max(a, b : int * int) : int =
-  if(a > b)
-  then a
-
-  else b
-;;
-
-
-let rec height(tree : 'a t_btree) : int =
-  if(isEmpty(tree))
-  then 0
-  else
-    (
-      let l : 'a t_btree = lson(tree) in
-      let r : 'a t_btree = rson(tree) in
-      1 + max(height(l), height(r))
-    )
-;;
-
-
 let reequilibrer(tree : 'a t_btree) : 'a t_btree =
   let deseq : int = getDeseq(tree) in
 
@@ -168,37 +148,6 @@ let rec ajt_avl(e, tree : 'b * 'a t_btree) : 'a  t_btree =
 ;;
 
 
-let rec treeMax(tree : 'a t_btree) : 'a =
-  if(isEmpty(tree))
-  then failwith("max isn't defined for empty trees")
-
-  else
-    (
-      let (v, g, d) : ('a * 'a t_btree * 'a t_btree) = (root(tree), lson(tree), rson(tree)) in
-      
-      if(isEmpty(d))
-      then v
-
-      else treeMax(d)
-    )
-;;
-
-
-let rec dmax(tree : 'a t_btree) : 'a t_btree =
-  if(isEmpty(tree))
-  then failwith("Tree is empty, can't apply dmax function on an empty tree")
-
-  else
-    (
-      let (v, g, d) : ('a * 'a t_btree * 'a t_btree) = (root(tree), lson(tree), rson(tree)) in
-
-      if(isEmpty(d))
-      then g
-
-      else reequilibrer(rooting(v, g, dmax(d)))
-    )
-;;
-
 
 let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
   if(isEmpty(tree))
@@ -223,7 +172,7 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
           else if(isEmpty(g))
           then d
 
-          else reequilibrer(rooting(treeMax(g), dmax(g), d))
+          else reequilibrer(rooting(bstMax(g), bstDmax(g), d))
         )
     )
 ;;

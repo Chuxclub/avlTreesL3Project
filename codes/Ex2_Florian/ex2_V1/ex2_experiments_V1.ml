@@ -2,6 +2,11 @@
 #load "btree.cmo";;
 open Btree;;
 
+#directory "../../librairies/modules_etu/utils/";;
+#use "treeUtils.ml";;
+
+#directory "../../librairies/modules_etu/bst/";;
+#use "bst.ml";;
 
 #directory "../../librairies/modules_etu/graphiques/";;
 #use "AP2util.ml";;
@@ -11,6 +16,8 @@ open Btree;;
 
 #directory "../../codes/Ex2_Florian/ex2_V1/";;
 #use "ex2_V1.ml";;
+
+
 
 (* ============================================================================================= *)
 (* ======================================== Exercice 2.1 ======================================= *)
