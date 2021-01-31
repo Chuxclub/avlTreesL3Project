@@ -213,7 +213,25 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 (* cf. ex2_experiments.ml *)
+let rec avl_seek(v,b : 'a * ('a * int) t_btree) : ('a * int) t_btree =
 
+  if(isEmpty(b))
+  then b
+
+  else
+    (
+      let (fg,fd) : ( ('a * int) t_btree * ('a * int) t_btree) = (lson(b),rson(b))
+      in
+
+      if(v = getValue(b))
+      then b
+
+      else if(v < getValue(b))
+      then avl_seek(v, fg)
+
+      else avl_seek(v, fd)
+    )
+;;
 
 
 

@@ -18,8 +18,6 @@ open Btree;;
 #use "ex2_V2.ml";;
 
 
-
-
 (* ============================================================================================= *)
 (* ======================================== Exercice 2.1 ======================================= *)
 (* ============================================================================================= *)
@@ -69,7 +67,7 @@ let dummy3b : ('a * int) t_btree = ajt_avl(32, dummy2);;
 show_int_btree(avlToBtree(dummy3b));;
 deseqList(dummy3b);;
 
-let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
+let otherdummy : 'a t_btree = avl_rnd_create(1000, 30);;
 show_int_btree(avlToBtree(otherdummy));;
 deseqList(otherdummy);;
 
@@ -117,12 +115,13 @@ show_int_btree(suppr_test1);;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-show_int_btree(bst_seek(ajt_test2, 4));;
+
 
 (* CONCLUSION: Il n'est plus possible la fonction bst_seek du module Bst *)
 
 
-
+avl_seek(4, otherdummy);;
+show_int_avl(avl_seek(4, otherdummy));;
 
 
 (* ============================================================================================= *)
@@ -306,7 +305,6 @@ testing_chk_seek(1000);;
 
 
 (* Problèmes à résoudre: *)
-
 (*
   Problèmes de la version 1:
   1) Pas de stockage nécessaire?
@@ -321,7 +319,4 @@ testing_chk_seek(1000);;
   4) Pouvoir afficher les AVL générés
  *)
 
-
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-
