@@ -1,6 +1,6 @@
 (* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
 
-#directory "../../librairies/modules_etu/graphiques/";;
+#directory "../../librairies/modules_UP/graphiques/";;
 #use "AP2util.ml";;
 #load "graphics.cma";;
 #use "graphique.ml";;
