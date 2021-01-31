@@ -7,11 +7,36 @@ let getValue(tree : ('a * int) t_btree) : 'a =
   v
 ;;
 
-let getDeseq(tree : ('a * int) t_btree) : int =
-  let (v, deseq) : ('a * int) = root(tree) in
-  deseq
+let getHeight(tree : ('a * int) t_btree) : int =
+  if(isEmpty(tree))
+  then 0
+
+  else
+    (
+      let (v, h) : ('a * int) = root(tree) in
+      h
+    )
 ;;
 
+let getNewHeight(tree : ('a * int) t_btree) : ('a * int) t_btree =
+  if(isEmpty(tree))
+  then tree
+
+  else
+    (
+      let ((v, h), g, d) : ('a * int) * ('a * int) t_btree * ('a * int) t_btree =
+        (root(tree), lson(tree), rson(tree)) in
+      rooting( ( v, 1 + max(getHeight(lson(tree)), getHeight(rson(tree))) ), g, d)
+    )
+;;
+
+let getDeseq(tree : ('a * int) t_btree) : int =
+  if(isEmpty(tree))
+  then 0
+
+  else
+    getHeight(lson(tree)) - getHeight(rson(tree))
+;;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
@@ -24,12 +49,12 @@ let rg(t : 'a t_btree) : 'a t_btree =
     (
       let (p, u, (q, v, w)) : 'a * 'a t_btree * ('a * 'a t_btree * 'a t_btree) =
         (
-          (getValue(t), 0),
+          root(t),
           lson(t),
-          ((getValue(rson(t)), 0), lson(rson(t)), rson(rson(t)))
+          (root(rson(t)), lson(rson(t)), rson(rson(t)))
         )
       in
-      rooting(q, rooting(p, u, v), w)
+      getNewHeight(rooting(q, getNewHeight(rooting(p, u, v)), w))
     )
 ;;
 
@@ -43,12 +68,12 @@ let rd(t : 'a t_btree) : 'a t_btree =
     (
       let (q, (p, u, v), w) : 'a * ('a * 'a t_btree * 'a t_btree) * 'a t_btree =
         (
-          (getValue(t), 0),
-          ((getValue(lson(t)), 0), lson(lson(t)), rson(lson(t))),
+          root(t),
+          (root(lson(t)), lson(lson(t)), rson(lson(t))),
           rson(t) 
         )
       in
-      rooting(p, u, rooting(q, v, w))
+      getNewHeight(rooting(p, u, getNewHeight(rooting(q, v, w))))
     )
 ;;
 
@@ -93,7 +118,7 @@ let reequilibrer(tree : 'a t_btree) : 'a t_btree =
       else if(ldeseq = -1)
       then rgd(tree)
 
-      else rooting((getValue(tree), getDeseq(tree)-1), lson(tree), rson(tree))
+      else rooting(root(tree), lson(tree), rson(tree))
     )
 
   else if(deseq = -2)
@@ -107,7 +132,7 @@ let reequilibrer(tree : 'a t_btree) : 'a t_btree =
       else if(rdeseq = -1)
       then rg(tree)
 
-      else rooting((getValue(tree), getDeseq(tree)+1), lson(tree), rson(tree))
+      else rooting(root(tree), lson(tree), rson(tree))
     )
 
   else
@@ -122,18 +147,18 @@ let reequilibrer(tree : 'a t_btree) : 'a t_btree =
 
 let rec ajt_avl(e, tree : 'b * 'a t_btree) : 'a  t_btree =
   if(isEmpty(tree))
-  then rooting((e, 0), empty(), empty())
+  then rooting((e, 1), empty(), empty())
 
   else
     (
-      let ((v, deseq), g, d) : (('b * int) * 'a t_btree * 'a t_btree) =
-        ((getValue(tree), getDeseq(tree)), lson(tree), rson(tree)) in
+      let ((v, h), g, d) : (('b * int) * 'a t_btree * 'a t_btree) =
+        ((getValue(tree), getHeight(tree)), lson(tree), rson(tree)) in
 
       if(e < v)
-      then reequilibrer(rooting((v, deseq+1), ajt_avl(e, g), d))
+      then reequilibrer(getNewHeight(rooting((v, h), ajt_avl(e, g), d)))
 
       else if(e > v)
-      then reequilibrer(rooting((v, deseq-1), g, ajt_avl(e, d)))
+      then reequilibrer(getNewHeight(rooting((v, h), g, ajt_avl(e, d))))
 
       else tree
     )
@@ -166,10 +191,10 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
         ((getValue(tree), getDeseq(tree)), lson(tree), rson(tree)) in
 
       if(e < v)
-      then reequilibrer(rooting((v, deseq), suppr_avl(e, g), d))
+      then reequilibrer(getNewHeight(rooting((v, deseq), suppr_avl(e, g), d)))
 
       else if(e > v)
-      then reequilibrer(rooting((v, deseq), g, suppr_avl(e, d)))
+      then reequilibrer(getNewHeight(rooting((v, deseq), g, suppr_avl(e, d))))
 
       else
         (
@@ -179,7 +204,7 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
           else if(isEmpty(g))
           then d
 
-          else reequilibrer(rooting(bstMax(g), avlDmax(g), d))
+          else reequilibrer(getNewHeight(rooting(bstMax(g), avlDmax(g), d)))
         )
     )
 ;;

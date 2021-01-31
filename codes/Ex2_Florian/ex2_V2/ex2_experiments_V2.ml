@@ -52,7 +52,7 @@ show_string_btree(t2);;
 show_string_btree(rd(t1));;
 show_string_btree(rgd(t2));;
 
-let dummy : ('a * int) t_btree = avl_rnd_create(1000, 5);;
+let dummy : ('a * int) t_btree = avl_rnd_create(1000, 3);;
 show_int_btree(avlToBtree(dummy));;
 deseqList(dummy);;
 
@@ -72,6 +72,10 @@ deseqList(dummy3b);;
 let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
 show_int_btree(avlToBtree(otherdummy));;
 deseqList(otherdummy);;
+
+let deleteTest : ('a * int) t_btree = suppr_avl(657, otherdummy);;
+show_int_btree(avlToBtree(deleteTest));;
+deseqList(deleteTest);;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
@@ -205,7 +209,7 @@ let testing_chk_ajt(n : int) : unit =
   )  
 ;;
 
-testing_chk_ajt(10000);;
+testing_chk_ajt(128);;
 
 
 (* Graphe de complexité de la suppression:  *)
@@ -218,9 +222,10 @@ let chk_suppr(n : int) : float array * float array =
     (
     for j = 1 to n
     do
+      let randInt : int = Random.int nODES_VALUES_MAX in
       t := avl_rnd_create(nODES_VALUES_MAX, j);
       tm.(j) <- Sys.time() ;
-      ignore(suppr_avl(42, !t)) ; 
+      ignore(suppr_avl(randInt, !t)) ; 
       tm.(j) <- Sys.time() -. tm.(j);
       ind.(j) <- float_of_int(j) ;
     done ;
@@ -251,7 +256,7 @@ let testing_chk_suppr(n : int) : unit =
   )  
 ;;
 
-testing_chk_suppr(1000);;
+testing_chk_suppr(64);;
 
 
 (* Graphe de complexité de la recherche:  *)
