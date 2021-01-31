@@ -1,3 +1,6 @@
+(* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
+
+
 type 'a bst = 'a t_btree ;;
 
 let rec bst_seek(b,v : 'a bst * 'a) : 'a bst =

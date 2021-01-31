@@ -1,3 +1,6 @@
+(* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
+
+
 let isLeaf(tree: 'a t_btree) : bool =
   if(isEmpty(tree))
   then failwith("isLeaf : tree is empty")

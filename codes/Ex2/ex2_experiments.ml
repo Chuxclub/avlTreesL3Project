@@ -1,21 +1,26 @@
-#directory "../../../librairies/modules_etu/graphiques/";;
+(* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
+
+#directory "../../librairies/modules_etu/graphiques/";;
 #use "AP2util.ml";;
 #load "graphics.cma";;
 #use "graphique.ml";;
 #use "AP2TP1draw.ml";;
 
-#directory "../../../librairies/modules_UP/4.08.1/";;
+#directory "../../librairies/modules_UP/4.08.1/";;
 #load "btree.cmo";;
 open Btree;;
 
-#directory "../../../librairies/modules_etu/utils/";;
+#directory "../../librairies/modules_etu/utils/";;
 #use "treeUtils.ml";;
 
-#directory "../../../librairies/modules_etu/bst/";;
+#directory "../../librairies/modules_etu/bst/";;
 #use "bst.ml";;
 
-#directory "../../../codes/Ex2_Florian/ex2_V1/";;
-#use "ex2_V1.ml";;
+#directory "../../codes/Ex2/";;
+#use "ex2.ml";;
+
+#directory "../../librairies/modules_etu/avl/";;
+#use "avlExperimentsUtils.ml";;
 
 
 
@@ -26,76 +31,69 @@ open Btree;;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let t1 : string t_btree = rooting("q",
-                                rooting("p",
-                                        rooting("u", empty(), empty()),
-                                        rooting("v", empty(), empty())
-                                  ),
-                                rooting("w", empty(), empty())
-                          );;
+let t1 : (string * int) t_btree = rooting(("q", 3),
+                                          rooting(("p", 2),
+                                                  rooting(("u", 1), empty(), empty()),
+                                                  rooting(("v", 1), empty(), empty())
+                                            ),
+                                          rooting(("w", 1), empty(), empty())
+                                    );;
 
-let t2 : string t_btree = rooting("r",
-                                rooting("p",
-                                        rooting("t", empty(), empty()),
-                                        rooting("q",
-                                                rooting("u", empty(), empty()),
-                                                rooting("v", empty(), empty())
-                                          )
-                                  ),
-                                rooting("w", empty(), empty())
-                            );;
+let t2 : (string * int) t_btree = rooting(("r", 4),
+                                          rooting(("p", 3),
+                                                  rooting(("t", 1), empty(), empty()),
+                                                  rooting(("q", 2),
+                                                          rooting(("u", 1), empty(), empty()),
+                                                          rooting(("v", 1), empty(), empty())
+                                                    )
+                                            ),
+                                          rooting(("w", 1), empty(), empty())
+                                    );;
 
-show_string_btree(t1);;
-show_string_btree(t2);;
+show_string_avl(t1);;
+show_string_avl(rd(t1));;
+deseqList(rd(t1));;
 
-show_string_btree(rd(t1));;
-show_string_btree(rgd(t2));;
 
+show_string_avl(t2);;
+show_string_avl(rgd(t2));;
+deseqList(rgd(t2));;
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let unbalancedt1 : int t_btree = rooting(12,
-                                         rooting(3,
-                                                 rooting(2, empty(), empty()),
+let unbalancedt1 : (int * int) t_btree = rooting((12, 3),
+                                                 rooting((3, 2),
+                                                         rooting((2, 1), empty(), empty()),
+                                                         empty()
+                                                   ),
                                                  empty()
-                                           ),
-                                         empty()
-                                   )
-;;
+                                           );;
 
-show_int_btree(unbalancedt1);;
-desequilibre(unbalancedt1);; (* Pb avec axiomes hauteur / desequilibre *)
+show_int_avl(unbalancedt1);;
+desequilibre(unbalancedt1);;
+desequilibre(lson(lson(unbalancedt1)));;
 height(unbalancedt1);;
-show_int_btree(reequilibrer(unbalancedt1));;
+show_int_avl(reequilibrer(unbalancedt1));;
 
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3 : ajouts & suppressions) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let ajt_test1 : int t_btree = ajt_avl(5, reequilibrer(unbalancedt1));;
-show_int_btree(ajt_test1);;
 
-let ajt_test2 : int t_btree = ajt_avl(4, ajt_test1);;
-show_int_btree(ajt_test2);;
+let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
+show_int_avl(otherdummy);;
+deseqList(otherdummy);;
 
-let dmax_test : int t_btree = dmax(ajt_test2);;
-show_int_btree(dmax_test);;
-
-treeMax(ajt_test2);;
-
-show_int_btree(ajt_test2);;
-let suppr_test1 : int t_btree = suppr_avl(3, ajt_test2);;
-show_int_btree(suppr_test1);;
+let deleteTest : ('a * int) t_btree = suppr_avl(611, otherdummy);;
+show_int_avl(deleteTest);;
+deseqList(deleteTest);;
 
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-show_int_btree(bst_seek(ajt_test2, 4));;
-
-(* CONCLUSION: Il est toujours possible d'utiliser la fonction de recherche des ABR *)
-
+show_int_avl(avl_seek(695, otherdummy));;
 
 
 
@@ -104,16 +102,16 @@ show_int_btree(bst_seek(ajt_test2, 4));;
 (* ======================================== Exercice 2.2 ======================================= *)
 (* ============================================================================================= *)
 
-let nODES_VALUES_MAX : int = 1000;;
+let _NODES_VALUES_MAX : int = 1000;;
 
-show_int_btree(avl_rnd_create(1000, 30));;
+
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-show_int_btree(avl_rnd_create(nODES_VALUES_MAX, 30));;
+show_int_btree(avl_rnd_create(_NODES_VALUES_MAX, 30));;
 
 let st : float = Sys.time() in
-ignore(avl_rnd_create(nODES_VALUES_MAX, 10000)) ;
+ignore(avl_rnd_create(_NODES_VALUES_MAX, 10000)) ;
 Sys.time() -. st
 ;;
 
@@ -125,11 +123,11 @@ Sys.time() -. st
 let chk_ajt(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
   let tm : float array = arr_make(n+1, 0.0) in
-  let test : 'a t_btree ref = ref(empty()) in
+  let test : ('a * int) t_btree ref = ref(empty()) in      
     (
     for j = 1 to n
     do
-      let randInt : int = Random.int nODES_VALUES_MAX in
+      let randInt : int = Random.int _NODES_VALUES_MAX in
       tm.(j) <- Sys.time() ;
       test := ajt_avl(randInt, !test); 
       tm.(j) <- Sys.time() -. tm.(j);
@@ -138,6 +136,7 @@ let chk_ajt(n : int) : float array * float array =
     (tm, ind) ;
     )
 ;;
+
 
 let testing_chk_ajt(n : int) : unit =
 
@@ -162,22 +161,23 @@ let testing_chk_ajt(n : int) : unit =
   )  
 ;;
 
-testing_chk_ajt(10000);;
+testing_chk_ajt(128);;
 
 
 (* Graphe de complexité de la suppression:  *)
 let chk_suppr(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
-  let tm : float array = arr_make(n + 1, 0.0) in
+  let tm : float array = arr_make(n+1, 0.0) in
   
-  let emptyTree : int t_btree = empty() in
-  let t : int t_btree ref = ref emptyTree in
+  let emptyTree : 'a t_btree = empty() in
+  let t : 'a t_btree ref = ref emptyTree in
     (
     for j = 1 to n
     do
+      let randInt : int = Random.int _NODES_VALUES_MAX in
       t := avl_rnd_create(nODES_VALUES_MAX, j);
       tm.(j) <- Sys.time() ;
-      ignore(suppr_avl(42, !t)) ; 
+      ignore(suppr_avl(randInt, !t)) ; 
       tm.(j) <- Sys.time() -. tm.(j);
       ind.(j) <- float_of_int(j) ;
     done ;
@@ -208,20 +208,18 @@ let testing_chk_suppr(n : int) : unit =
   )  
 ;;
 
-testing_chk_suppr(1000);;
+testing_chk_suppr(64);;
 
 
 (* Graphe de complexité de la recherche:  *)
 let chk_seek(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
   let tm : float array = arr_make(n + 1, 0.0) in
-  
-  let emptyTree : int t_btree = empty() in
-  let t : int t_btree ref = ref emptyTree in
+  let t : 'a t_btree ref = ref (empty()) in
     (
     for j = 1 to n
     do
-      t := avl_rnd_create(nODES_VALUES_MAX, j);
+      t := avl_rnd_create(_NODES_VALUES_MAX, j);
       tm.(j) <- Sys.time() ;
       ignore(bst_seek(!t, 42)) ; 
       tm.(j) <- Sys.time() -. tm.(j);
@@ -257,7 +255,4 @@ let testing_chk_seek(n : int) : unit =
 testing_chk_seek(1000);;
 
 
-
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-

@@ -1,3 +1,6 @@
+(* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
+
+
 let show_int_avl (tree : (int * int) t_btree) =
   show(
       (fun (v,h:int*int) -> String.concat "," [string_of_int(v); string_of_int(h)]),
