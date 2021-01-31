@@ -21,6 +21,8 @@ open Btree;;
 
 #directory "../../librairies/modules_etu/avl/";;
 #use "avlExperimentsUtils.ml";;
+#use "avlGraphicsUtils.ml";;
+
 
 
 
@@ -80,19 +82,26 @@ show_int_avl(reequilibrer(unbalancedt1));;
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3 : ajouts & suppressions) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 
+(* Ajout: *)
 let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
 show_int_avl(otherdummy);;
 deseqList(otherdummy);;
 
+
+(* Suppression: *)
 let deleteTest : 'a avl = suppr_avl(611, otherdummy);;
 show_int_avl(deleteTest);;
 deseqList(deleteTest);;
 
 
-
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
+let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
+show_int_avl(otherdummy);;
 show_int_avl(avl_seek(695, otherdummy));;
+
+
+
 
 
 
@@ -101,157 +110,20 @@ show_int_avl(avl_seek(695, otherdummy));;
 (* ======================================== Exercice 2.2 ======================================= *)
 (* ============================================================================================= *)
 
-let _NODES_VALUES_MAX : int = 1000;;
-
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-show_int_btree(avl_rnd_create(_NODES_VALUES_MAX, 30));;
-
-let st : float = Sys.time() in
-ignore(avl_rnd_create(_NODES_VALUES_MAX, 10000)) ;
-Sys.time() -. st
-;;
+(* Ajout: *)
+ajtGraph(64);;
 
 
-
-(* /////////////// Graphes de complexité \\\\\\\\\\\\\ *)
-
-(* Graphe de complexité de l'ajout:  *)
-let chk_ajt(n : int) : float array * float array = 
-  let ind : float array = arr_make(n+1, 0.0) in
-  let tm : float array = arr_make(n+1, 0.0) in
-  let test : ('a * int) t_btree ref = ref(empty()) in      
-    (
-    for j = 1 to n
-    do
-      let randInt : int = Random.int _NODES_VALUES_MAX in
-      tm.(j) <- Sys.time() ;
-      test := ajt_avl(randInt, !test); 
-      tm.(j) <- Sys.time() -. tm.(j);
-      ind.(j) <- float_of_int(j) ;
-    done ;
-    (tm, ind) ;
-    )
-;;
+(* Suppression: *)
+supprGraph(64);;
 
 
-let testing_chk_ajt(n : int) : unit =
-
-  let (value, ind) : float array * float array = chk_ajt(n) in
-  let rep : t_rep = {orx = 50; ory = 50; extx = 900; exty = 500} in
-  let close : char ref = ref 'o' in
-  (
-    open_graph(1000, 600);
-    draw_rep(rep);
-    draw_curve(value, ind,  arr_len(ind) - 1, rep);
-
-    print_string("Enter y;; when you're done to cleanly close the graph:");
-    close := read_char();
-
-    if(!close == 'y')
-    then
-    (
-      clear_graph();
-      close_graph();
-    )
-    
-  )  
-;;
-
-testing_chk_ajt(128);;
-
-
-(* Graphe de complexité de la suppression:  *)
-let chk_suppr(n : int) : float array * float array = 
-  let ind : float array = arr_make(n+1, 0.0) in
-  let tm : float array = arr_make(n+1, 0.0) in
-  
-  let emptyTree : 'a t_btree = empty() in
-  let t : 'a t_btree ref = ref emptyTree in
-    (
-    for j = 1 to n
-    do
-      let randInt : int = Random.int _NODES_VALUES_MAX in
-      t := avl_rnd_create(nODES_VALUES_MAX, j);
-      tm.(j) <- Sys.time() ;
-      ignore(suppr_avl(randInt, !t)) ; 
-      tm.(j) <- Sys.time() -. tm.(j);
-      ind.(j) <- float_of_int(j) ;
-    done ;
-    (tm, ind) ;
-    )
-;;
-
-let testing_chk_suppr(n : int) : unit =
-
-  let (value, ind) : float array * float array = chk_suppr(n) in
-  let rep : t_rep = {orx = 50; ory = 50; extx = 900; exty = 500} in
-  let close : char ref = ref 'o' in
-  (
-    open_graph(1000, 600);
-    draw_rep(rep);
-    draw_curve(value, ind,  arr_len(ind) - 1, rep);
-
-    print_string("Enter y;; when you're done to cleanly close the graph:");
-    close := read_char();
-
-    if(!close == 'y')
-    then
-    (
-      clear_graph();
-      close_graph();
-    )
-    
-  )  
-;;
-
-testing_chk_suppr(64);;
-
-
-(* Graphe de complexité de la recherche:  *)
-let chk_seek(n : int) : float array * float array = 
-  let ind : float array = arr_make(n+1, 0.0) in
-  let tm : float array = arr_make(n + 1, 0.0) in
-  let t : 'a t_btree ref = ref (empty()) in
-    (
-    for j = 1 to n
-    do
-      t := avl_rnd_create(_NODES_VALUES_MAX, j);
-      tm.(j) <- Sys.time() ;
-      ignore(bst_seek(!t, 42)) ; 
-      tm.(j) <- Sys.time() -. tm.(j);
-      ind.(j) <- float_of_int(j) ;
-    done ;
-    (tm, ind) ;
-    )
-;;
-
-let testing_chk_seek(n : int) : unit =
-
-  let (value, ind) : float array * float array = chk_seek(n) in
-  let rep : t_rep = {orx = 50; ory = 50; extx = 900; exty = 500} in
-  let close : char ref = ref 'o' in
-  (
-    open_graph(1000, 600);
-    draw_rep(rep);
-    draw_curve(value, ind,  arr_len(ind) - 1, rep);
-
-    print_string("Enter y;; when you're done to cleanly close the graph:");
-    close := read_char();
-
-    if(!close == 'y')
-    then
-    (
-      clear_graph();
-      close_graph();
-    )
-    
-  )  
-;;
-
-testing_chk_seek(1000);;
+(* Recherche: *)
+seekGraph(64);;
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
