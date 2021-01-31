@@ -1,6 +1,14 @@
+(* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
+
+
+
 (* ============================================================================================= *)
 (* ======================================== Exercice 2.1 ======================================= *)
 (* ============================================================================================= *)
+
+
+
+(* ~~~~~~~~~~~~~~~~~~~~~ (0 : Quelques utilitaires à nous pour la suite) ~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 let getValue(tree : ('a * int) t_btree) : 'a =
   let (v, deseq) : ('a * int) = root(tree) in
@@ -30,13 +38,15 @@ let getNewHeight(tree : ('a * int) t_btree) : ('a * int) t_btree =
     )
 ;;
 
-let getDeseq(tree : ('a * int) t_btree) : int =
+let desequilibre(tree : ('a * int) t_btree) : int =
   if(isEmpty(tree))
   then 0
 
   else
     getHeight(lson(tree)) - getHeight(rson(tree))
 ;;
+
+
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
@@ -99,10 +109,11 @@ let rdg(t : 'a t_btree) : 'a t_btree =
 ;;
 
 
+
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 let reequilibrer(tree : 'a t_btree) : 'a t_btree =
-  let deseq : int = getDeseq(tree) in
+  let deseq : int = desequilibre(tree) in
 
   if(deseq >= -1 && deseq <= 1)
   then tree
@@ -110,29 +121,23 @@ let reequilibrer(tree : 'a t_btree) : 'a t_btree =
   else if(deseq = 2)
   then
     (
-      let ldeseq : int = getDeseq(lson(tree)) in
+      let ldeseq : int = desequilibre(lson(tree)) in
 
       if(ldeseq = 1)
       then rd(tree)
 
-      else if(ldeseq = -1)
-      then rgd(tree)
-
-      else rooting(root(tree), lson(tree), rson(tree))
+      else rgd(tree)
     )
 
   else if(deseq = -2)
   then
     (
-      let rdeseq : int = getDeseq(rson(tree)) in
+      let rdeseq : int = desequilibre(rson(tree)) in
 
       if(rdeseq = 1)
       then rdg(tree)
 
-      else if(rdeseq = -1)
-      then rg(tree)
-
-      else rooting(root(tree), lson(tree), rson(tree))
+      else rg(tree)
     )
 
   else
@@ -141,6 +146,7 @@ let reequilibrer(tree : 'a t_btree) : 'a t_btree =
                 all nodes' unbalance values should be in {-2, -1, 0, 1, 2}")
     )
 ;;
+
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3 : ajouts & suppressions) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
@@ -176,7 +182,7 @@ let rec avlDmax(tree : 'a t_btree) : 'a t_btree =
       if(isEmpty(d))
       then g
 
-      else reequilibrer(rooting(v, g, avlDmax(d)))
+      else reequilibrer(getNewHeight(rooting(v, g, avlDmax(d))))
     )
 ;;
 
@@ -187,14 +193,14 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
 
   else
     (
-      let ((v, deseq), g, d) : (('b * int) * 'a t_btree * 'a t_btree) =
-        ((getValue(tree), getDeseq(tree)), lson(tree), rson(tree)) in
+      let ((v, h), g, d) : (('b * int) * 'a t_btree * 'a t_btree) =
+        ((getValue(tree), getHeight(tree)), lson(tree), rson(tree)) in
 
       if(e < v)
-      then reequilibrer(getNewHeight(rooting((v, deseq), suppr_avl(e, g), d)))
+      then reequilibrer(getNewHeight(rooting((v, h), suppr_avl(e, g), d)))
 
       else if(e > v)
-      then reequilibrer(getNewHeight(rooting((v, deseq), g, suppr_avl(e, d))))
+      then reequilibrer(getNewHeight(rooting((v, h), g, suppr_avl(e, d))))
 
       else
         (
@@ -210,6 +216,7 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
 ;;
 
 
+
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 (* cf. ex2_experiments.ml *)
@@ -218,9 +225,12 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
 
 
 
+
 (* ============================================================================================= *)
 (* ======================================== Exercice 2.2 ======================================= *)
 (* ============================================================================================= *)
+
+
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
@@ -240,27 +250,7 @@ let avl_rnd_create(bound, treeSize : int * int) : ('a * int) t_btree =
   !randABR
 ;;
 
+
+
+
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
-
-
-let rec avlToBtree(tree : ('a * int) t_btree) : 'a t_btree =
-  if(isEmpty(tree))
-  then empty()
-
-  else
-    (
-      rooting(getValue(tree), avlToBtree(lson(tree)), avlToBtree(rson(tree)))
-    )
-;;
-
-let rec deseqList(tree : ('a * int) t_btree) : int list =
-  if(isEmpty(tree))
-  then []
-
-  else
-    (
-      let res1 : int list = getDeseq(tree)::deseqList(lson(tree)) in
-      let res : int list = res1@deseqList(rson(tree)) in
-      res
-    )
-;;

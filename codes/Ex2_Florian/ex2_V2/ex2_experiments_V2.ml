@@ -17,7 +17,8 @@ open Btree;;
 #directory "../../../codes/Ex2_Florian/ex2_V2/";;
 #use "ex2_V2.ml";;
 
-
+#directory "../../../librairies/modules_etu/avl/";;
+#use "avlExperimentsUtils.ml";;
 
 
 (* ============================================================================================= *)
@@ -27,97 +28,69 @@ open Btree;;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let t1 : string t_btree = rooting("q",
-                                rooting("p",
-                                        rooting("u", empty(), empty()),
-                                        rooting("v", empty(), empty())
-                                  ),
-                                rooting("w", empty(), empty())
-                          );;
+let t1 : (string * int) t_btree = rooting(("q", 3),
+                                          rooting(("p", 2),
+                                                  rooting(("u", 1), empty(), empty()),
+                                                  rooting(("v", 1), empty(), empty())
+                                            ),
+                                          rooting(("w", 1), empty(), empty())
+                                    );;
 
-let t2 : string t_btree = rooting("r",
-                                rooting("p",
-                                        rooting("t", empty(), empty()),
-                                        rooting("q",
-                                                rooting("u", empty(), empty()),
-                                                rooting("v", empty(), empty())
-                                          )
-                                  ),
-                                rooting("w", empty(), empty())
-                            );;
+let t2 : (string * int) t_btree = rooting(("r", 4),
+                                          rooting(("p", 3),
+                                                  rooting(("t", 1), empty(), empty()),
+                                                  rooting(("q", 2),
+                                                          rooting(("u", 1), empty(), empty()),
+                                                          rooting(("v", 1), empty(), empty())
+                                                    )
+                                            ),
+                                          rooting(("w", 1), empty(), empty())
+                                    );;
 
-show_string_btree(t1);;
-show_string_btree(t2);;
-
-show_string_btree(rd(t1));;
-show_string_btree(rgd(t2));;
-
-let dummy : ('a * int) t_btree = avl_rnd_create(1000, 3);;
-show_int_btree(avlToBtree(dummy));;
-deseqList(dummy);;
-
-let dummy2 : ('a * int) t_btree = ajt_avl(220, dummy);;
-show_int_btree(avlToBtree(dummy2));;
-deseqList(dummy2);;
+show_string_avl(t1);;
+show_string_avl(rd(t1));;
+deseqList(rd(t1));;
 
 
-let dummy3a : ('a * int) t_btree = ajt_avl(225, dummy2);;
-show_int_btree(avlToBtree(dummy3a));;
-deseqList(dummy3a);;
+show_string_avl(t2);;
+show_string_avl(rgd(t2));;
+deseqList(rgd(t2));;
 
-let dummy3b : ('a * int) t_btree = ajt_avl(32, dummy2);;
-show_int_btree(avlToBtree(dummy3b));;
-deseqList(dummy3b);;
-
-let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
-show_int_btree(avlToBtree(otherdummy));;
-deseqList(otherdummy);;
-
-let deleteTest : ('a * int) t_btree = suppr_avl(657, otherdummy);;
-show_int_btree(avlToBtree(deleteTest));;
-deseqList(deleteTest);;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let unbalancedt1 : int t_btree = rooting(12,
-                                         rooting(3,
-                                                 rooting(2, empty(), empty()),
+let unbalancedt1 : (int * int) t_btree = rooting((12, 3),
+                                                 rooting((3, 2),
+                                                         rooting((2, 1), empty(), empty()),
+                                                         empty()
+                                                   ),
                                                  empty()
-                                           ),
-                                         empty()
-                                   )
-;;
+                                           );;
 
-show_int_btree(unbalancedt1);;
+show_int_avl(unbalancedt1);;
 desequilibre(unbalancedt1);;
 desequilibre(lson(lson(unbalancedt1)));;
 height(unbalancedt1);;
-show_int_btree(reequilibrer(unbalancedt1));;
+show_int_avl(reequilibrer(unbalancedt1));;
 
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3 : ajouts & suppressions) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let ajt_test1 : int t_btree = ajt_avl(5, reequilibrer(unbalancedt1));;
-show_int_btree(ajt_test1);;
 
-let ajt_test2 : int t_btree = ajt_avl(4, ajt_test1);;
-show_int_btree(ajt_test2);;
+let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
+show_int_avl(otherdummy);;
+deseqList(otherdummy);;
 
-let dmax_test : int t_btree = dmax(ajt_test2);;
-show_int_btree(dmax_test);;
-
-treeMax(ajt_test2);;
-
-show_int_btree(ajt_test2);;
-let suppr_test1 : int t_btree = suppr_avl(3, ajt_test2);;
-show_int_btree(suppr_test1);;
+let deleteTest : ('a * int) t_btree = suppr_avl(611, otherdummy);;
+show_int_avl(deleteTest);;
+deseqList(deleteTest);;
 
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-show_int_btree(bst_seek(ajt_test2, 4));;
+show_int_avl(avl_seek(otherdummy, 4));;
 
 (* CONCLUSION: Il n'est plus possible la fonction bst_seek du module Bst *)
 
@@ -129,16 +102,16 @@ show_int_btree(bst_seek(ajt_test2, 4));;
 (* ======================================== Exercice 2.2 ======================================= *)
 (* ============================================================================================= *)
 
-let nODES_VALUES_MAX : int = 1000;;
+let _NODES_VALUES_MAX : int = 1000;;
 
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-show_int_btree(avl_rnd_create(nODES_VALUES_MAX, 30));;
+show_int_btree(avl_rnd_create(_NODES_VALUES_MAX, 30));;
 
 let st : float = Sys.time() in
-ignore(avl_rnd_create(nODES_VALUES_MAX, 10000)) ;
+ignore(avl_rnd_create(_NODES_VALUES_MAX, 10000)) ;
 Sys.time() -. st
 ;;
 
@@ -154,18 +127,17 @@ let chk_ajt(n : int) : float array * float array =
     (
     for j = 1 to n
     do
-      let randInt : int = Random.int nODES_VALUES_MAX in
+      let randInt : int = Random.int _NODES_VALUES_MAX in
       tm.(j) <- Sys.time() ;
       test := ajt_avl(randInt, !test); 
       tm.(j) <- Sys.time() -. tm.(j);
       ind.(j) <- float_of_int(j) ;
     done ;
-    print_int(getDeseq(!test));
     (tm, ind) ;
     )
 ;;
 
-let chk_ajt2(n : int) : float array * float array = 
+(*let chk_ajt2(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
   let tm : float array = arr_make(n+1, 0.0) in
   (
@@ -184,7 +156,7 @@ let chk_ajt2(n : int) : float array * float array =
     done ;
     (tm, ind) ;
     )
-;;
+;;*)
 
 let testing_chk_ajt(n : int) : unit =
 
@@ -222,7 +194,7 @@ let chk_suppr(n : int) : float array * float array =
     (
     for j = 1 to n
     do
-      let randInt : int = Random.int nODES_VALUES_MAX in
+      let randInt : int = Random.int _NODES_VALUES_MAX in
       t := avl_rnd_create(nODES_VALUES_MAX, j);
       tm.(j) <- Sys.time() ;
       ignore(suppr_avl(randInt, !t)) ; 
@@ -263,13 +235,11 @@ testing_chk_suppr(64);;
 let chk_seek(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
   let tm : float array = arr_make(n + 1, 0.0) in
-  
-  let emptyTree : 'a t_btree = empty() in
-  let t : 'a t_btree ref = ref emptyTree in
+  let t : 'a t_btree ref = ref (empty()) in
     (
     for j = 1 to n
     do
-      t := avl_rnd_create(nODES_VALUES_MAX, j);
+      t := avl_rnd_create(_NODES_VALUES_MAX, j);
       tm.(j) <- Sys.time() ;
       ignore(bst_seek(!t, 42)) ; 
       tm.(j) <- Sys.time() -. tm.(j);
