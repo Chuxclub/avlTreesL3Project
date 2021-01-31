@@ -10,35 +10,30 @@
 
 (* ~~~~~~~~~~~~~~~~~~~~~ (0 : Quelques utilitaires à nous pour la suite) ~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let getValue(tree : ('a * int) t_btree) : 'a =
+type 'a avl = ('a * int) bst;;
+
+let getValue(tree : 'a avl) : 'a =
   let (v, deseq) : ('a * int) = root(tree) in
   v
 ;;
 
-let getHeight(tree : ('a * int) t_btree) : int =
+let getHeight(tree : 'a avl) : int =
   if(isEmpty(tree))
   then 0
 
-  else
-    (
-      let (v, h) : ('a * int) = root(tree) in
-      h
-    )
+  else let (v, h) : ('a * int) = root(tree) in h
 ;;
 
-let getNewHeight(tree : ('a * int) t_btree) : ('a * int) t_btree =
+let getNewHeight(tree : 'a avl) : 'a avl =
   if(isEmpty(tree))
   then tree
 
   else
-    (
-      let ((v, h), g, d) : ('a * int) * ('a * int) t_btree * ('a * int) t_btree =
-        (root(tree), lson(tree), rson(tree)) in
+      let ((v, h), g, d) : ('a * int) * 'a avl * 'a avl = (root(tree), lson(tree), rson(tree)) in
       rooting( ( v, 1 + max(getHeight(lson(tree)), getHeight(rson(tree))) ), g, d)
-    )
 ;;
 
-let desequilibre(tree : ('a * int) t_btree) : int =
+let desequilibre(tree : 'a avl) : int =
   if(isEmpty(tree))
   then 0
 
@@ -51,13 +46,13 @@ let desequilibre(tree : ('a * int) t_btree) : int =
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 
-let rg(t : 'a t_btree) : 'a t_btree =
+let rg(t : 'a avl) : 'a avl =
   if(isEmpty(t) || isEmpty(rson(t)))
   then failwith("Tree or right subtree is empty. Function rg can't continue")
 
   else
     (
-      let (p, u, (q, v, w)) : 'a * 'a t_btree * ('a * 'a t_btree * 'a t_btree) =
+      let (p, u, (q, v, w)) : 'b * 'a avl * ('b * 'a avl * 'a avl) =
         (
           root(t),
           lson(t),
@@ -70,13 +65,13 @@ let rg(t : 'a t_btree) : 'a t_btree =
 
 
 
-let rd(t : 'a t_btree) : 'a t_btree =
+let rd(t : 'a avl) : 'a avl =
   if(isEmpty(t) || isEmpty(lson(t)))
   then failwith("Tree or right subtree is empty. Function rd can't continue")
 
   else
     (
-      let (q, (p, u, v), w) : 'a * ('a * 'a t_btree * 'a t_btree) * 'a t_btree =
+      let (q, (p, u, v), w) : 'b * ('b * 'a avl * 'a avl) * 'a avl =
         (
           root(t),
           (root(lson(t)), lson(lson(t)), rson(lson(t))),
@@ -89,21 +84,21 @@ let rd(t : 'a t_btree) : 'a t_btree =
 
 
 
-let rgd(t : 'a t_btree) : 'a t_btree =
+let rgd(t : 'a avl) : 'a avl =
   
-  let (v, g, d) : 'a * 'a t_btree * 'a t_btree = (root(t), lson(t), rson(t)) in
-  let t1 : 'a t_btree = rooting(v, rg(g), d) in
-  let t_res : 'a t_btree = rd(t1) in
+  let (v, g, d) : 'b * 'a avl * 'a avl = (root(t), lson(t), rson(t)) in
+  let t1 : 'a avl = rooting(v, rg(g), d) in
+  let t_res : 'a avl = rd(t1) in
 
   t_res  
 ;;
 
 
-let rdg(t : 'a t_btree) : 'a t_btree =
+let rdg(t : 'a avl) : 'a avl =
   
-  let (v, g, d) : 'a * 'a t_btree * 'a t_btree = (root(t), lson(t), rson(t)) in
-  let t1 : 'a t_btree = rooting(v, g, rd(d)) in
-  let t_res : 'a t_btree = rg(t1) in
+  let (v, g, d) : 'b * 'a avl * 'a avl = (root(t), lson(t), rson(t)) in
+  let t1 : 'a avl = rooting(v, g, rd(d)) in
+  let t_res : 'a avl = rg(t1) in
 
   t_res  
 ;;
@@ -112,7 +107,7 @@ let rdg(t : 'a t_btree) : 'a t_btree =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let reequilibrer(tree : 'a t_btree) : 'a t_btree =
+let reequilibrer(tree : 'a avl) : 'a avl =
   let deseq : int = desequilibre(tree) in
 
   if(deseq >= -1 && deseq <= 1)
@@ -151,13 +146,13 @@ let reequilibrer(tree : 'a t_btree) : 'a t_btree =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3 : ajouts & suppressions) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let rec ajt_avl(e, tree : 'b * 'a t_btree) : 'a  t_btree =
+let rec ajt_avl(e, tree : 'b * 'a avl) : 'a avl =
   if(isEmpty(tree))
   then rooting((e, 1), empty(), empty())
 
   else
     (
-      let ((v, h), g, d) : (('b * int) * 'a t_btree * 'a t_btree) =
+      let ((v, h), g, d) : (('a * int) * 'a avl * 'a avl) =
         ((getValue(tree), getHeight(tree)), lson(tree), rson(tree)) in
 
       if(e < v)
@@ -171,13 +166,13 @@ let rec ajt_avl(e, tree : 'b * 'a t_btree) : 'a  t_btree =
 ;;
 
 
-let rec avlDmax(tree : 'a t_btree) : 'a t_btree =
+let rec avlDmax(tree : 'a avl) : 'a avl =
   if(isEmpty(tree))
   then failwith("Tree is empty, can't apply dmax function on an empty tree")
 
   else
     (
-      let (v, g, d) : ('a * 'a t_btree * 'a t_btree) = (root(tree), lson(tree), rson(tree)) in
+      let (v, g, d) : ('b * 'a avl * 'a avl) = (root(tree), lson(tree), rson(tree)) in
 
       if(isEmpty(d))
       then g
@@ -187,13 +182,13 @@ let rec avlDmax(tree : 'a t_btree) : 'a t_btree =
 ;;
 
 
-let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
+let rec suppr_avl(e, tree : 'b * 'a avl) : 'a avl =
   if(isEmpty(tree))
   then empty()
 
   else
     (
-      let ((v, h), g, d) : (('b * int) * 'a t_btree * 'a t_btree) =
+      let ((v, h), g, d) : (('a * int) * 'a avl * 'a avl) =
         ((getValue(tree), getHeight(tree)), lson(tree), rson(tree)) in
 
       if(e < v)
@@ -219,14 +214,14 @@ let rec suppr_avl(e, tree : 'b * 'a t_btree) : 'a t_btree =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let rec avl_seek(v,b : 'a * ('a * int) t_btree) : ('a * int) t_btree =
+let rec avl_seek(v,b : 'a * 'a avl) : 'a avl =
 
   if(isEmpty(b))
   then b
 
   else
     (
-      let (fg,fd) : ( ('a * int) t_btree * ('a * int) t_btree) = (lson(b),rson(b))
+      let (fg,fd) : ('a avl * 'a avl) = (lson(b),rson(b))
       in
 
       if(v = getValue(b))
@@ -252,12 +247,12 @@ let rec avl_seek(v,b : 'a * ('a * int) t_btree) : ('a * int) t_btree =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let avl_rnd_create(bound, treeSize : int * int) : ('a * int) t_btree =
+let avl_rnd_create(bound, treeSize : int * int) : 'a avl =
 
   Random.self_init();
 
-  let empty_tree : ('a * int) t_btree = empty() in
-  let randABR : ('a * int) t_btree ref = ref empty_tree in
+  let empty_tree : 'a avl = empty() in
+  let randABR : 'a avl ref = ref empty_tree in
   
   for i=1 to treeSize do
     let randInt : int = Random.int bound in

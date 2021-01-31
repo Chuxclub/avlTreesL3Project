@@ -31,24 +31,24 @@ open Btree;;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let t1 : (string * int) t_btree = rooting(("q", 3),
-                                          rooting(("p", 2),
-                                                  rooting(("u", 1), empty(), empty()),
-                                                  rooting(("v", 1), empty(), empty())
-                                            ),
-                                          rooting(("w", 1), empty(), empty())
-                                    );;
+let t1 : string avl  = rooting(("q", 3),
+                               rooting(("p", 2),
+                                       rooting(("u", 1), empty(), empty()),
+                                       rooting(("v", 1), empty(), empty())
+                                 ),
+                               rooting(("w", 1), empty(), empty())
+                         );;
 
-let t2 : (string * int) t_btree = rooting(("r", 4),
-                                          rooting(("p", 3),
-                                                  rooting(("t", 1), empty(), empty()),
-                                                  rooting(("q", 2),
-                                                          rooting(("u", 1), empty(), empty()),
-                                                          rooting(("v", 1), empty(), empty())
-                                                    )
-                                            ),
-                                          rooting(("w", 1), empty(), empty())
-                                    );;
+let t2 : string avl = rooting(("r", 4),
+                              rooting(("p", 3),
+                                      rooting(("t", 1), empty(), empty()),
+                                      rooting(("q", 2),
+                                              rooting(("u", 1), empty(), empty()),
+                                              rooting(("v", 1), empty(), empty())
+                                        )
+                                ),
+                              rooting(("w", 1), empty(), empty())
+                        );;
 
 show_string_avl(t1);;
 show_string_avl(rd(t1));;
@@ -62,18 +62,17 @@ deseqList(rgd(t2));;
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (2 : desequilibre & reequilibrer) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let unbalancedt1 : (int * int) t_btree = rooting((12, 3),
-                                                 rooting((3, 2),
-                                                         rooting((2, 1), empty(), empty()),
-                                                         empty()
-                                                   ),
-                                                 empty()
-                                           );;
+let unbalancedt1 : int avl = rooting((12, 3),
+                                     rooting((3, 2),
+                                             rooting((2, 1), empty(), empty()),
+                                             empty()
+                                       ),
+                                     empty()
+                               );;
 
 show_int_avl(unbalancedt1);;
 desequilibre(unbalancedt1);;
 desequilibre(lson(lson(unbalancedt1)));;
-height(unbalancedt1);;
 show_int_avl(reequilibrer(unbalancedt1));;
 
 
@@ -81,11 +80,11 @@ show_int_avl(reequilibrer(unbalancedt1));;
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3 : ajouts & suppressions) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 
-let otherdummy : ('a * int) t_btree = avl_rnd_create(1000, 30);;
+let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
 show_int_avl(otherdummy);;
 deseqList(otherdummy);;
 
-let deleteTest : ('a * int) t_btree = suppr_avl(611, otherdummy);;
+let deleteTest : 'a avl = suppr_avl(611, otherdummy);;
 show_int_avl(deleteTest);;
 deseqList(deleteTest);;
 
