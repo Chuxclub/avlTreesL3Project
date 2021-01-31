@@ -36,3 +36,10 @@ let rec deseqList(tree : ('a * int) t_btree) : int list =
       res
     )
 ;;
+
+let chrono(func, args : ('a -> 'b) * ('c * 'c avl)) : float =
+  let start_chrono : float = Sys.time() in
+  ignore(func(args));
+  Sys.time() -. start_chrono
+;;
+

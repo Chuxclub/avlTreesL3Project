@@ -214,7 +214,7 @@ let rec suppr_avl(e, tree : 'b * 'a avl) : 'a avl =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~ (4 : operation recherche du module Bst) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let rec avl_seek(v,b : 'a * 'a avl) : 'a avl =
+let rec seek_avl(v,b : 'a * 'a avl) : 'a avl =
 
   if(isEmpty(b))
   then b
@@ -228,9 +228,9 @@ let rec avl_seek(v,b : 'a * 'a avl) : 'a avl =
       then b
 
       else if(v < getValue(b))
-      then avl_seek(v, fg)
+      then seek_avl(v, fg)
 
-      else avl_seek(v, fd)
+      else seek_avl(v, fd)
     )
 ;;
 

@@ -11,6 +11,7 @@
 open Btree;;
 
 #directory "../../librairies/modules_etu/utils/";;
+#use "utils.ml";;
 #use "treeUtils.ml";;
 
 #directory "../../librairies/modules_etu/bst/";;
@@ -98,7 +99,7 @@ deseqList(deleteTest);;
 
 let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
 show_int_avl(otherdummy);;
-show_int_avl(avl_seek(695, otherdummy));;
+show_int_avl(seek_avl(695, otherdummy));;
 
 
 
@@ -115,14 +116,23 @@ show_int_avl(avl_seek(695, otherdummy));;
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 (* Ajout: *)
+let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
+show_int_avl(otherdummy);;
+chrono(ajt_avl, (564, otherdummy));;
 ajtGraph(64);;
 
 
 (* Suppression: *)
+let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
+show_int_avl(otherdummy);;
+chrono(suppr_avl, (641, otherdummy));;
 supprGraph(64);;
 
 
 (* Recherche: *)
+let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
+show_int_avl(otherdummy);;
+chrono(seek_avl, (203, otherdummy));;
 seekGraph(64);;
 
 

@@ -117,7 +117,7 @@ let seekChrono(n : int) : float array * float array =
     do
       t := avl_rnd_create(_NODES_VALUES_MAX, j);
       tm.(j) <- Sys.time();
-      ignore(avl_seek(42, !t)); 
+      ignore(seek_avl(42, !t)); 
       tm.(j) <- Sys.time() -. tm.(j);
       ind.(j) <- float_of_int(j) ;
     done ;
@@ -147,11 +147,3 @@ let seekGraph(n : int) : unit =
     
   )  
 ;;
-
-
-(*
-let st : float = Sys.time() in
-ignore(avl_rnd_create(_NODES_VALUES_MAX, 10000)) ;
-Sys.time() -. st
-;;
- *)
