@@ -266,3 +266,204 @@ let avl_rnd_create(bound, treeSize : int * int) : 'a avl =
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
+
+
+(* Quelques utilitaires... *)
+
+let nbRots : int ref = ref 0;;
+
+let reequilibrer_stats(tree : 'a avl) : 'a avl =
+  let deseq : int = desequilibre(tree) in
+
+  if(deseq >= -1 && deseq <= 1)
+  then tree
+
+  else if(deseq = 2)
+  then
+    (
+      let ldeseq : int = desequilibre(lson(tree)) in
+
+      if(ldeseq = 1)
+      then (
+        nbRots := !nbRots + 1;
+        rd(tree)
+      )
+
+      else
+        (
+          nbRots := !nbRots + 1;
+          rgd(tree)
+        )
+    )
+
+  else if(deseq = -2)
+  then
+    (
+      let rdeseq : int = desequilibre(rson(tree)) in
+
+      if(rdeseq = 1)
+      then (
+        nbRots := !nbRots + 1;
+        rdg(tree)
+      )
+
+      else (
+        nbRots := !nbRots + 1;
+        rg(tree)
+      )
+    )
+
+  else
+    (
+      failwith("reequilibrer: Something went really wrong, 
+                all nodes' unbalance values should be in {-2, -1, 0, 1, 2}")
+    )
+;;
+
+
+
+
+(* Ajout *)
+
+let rec ajt_avl_stats(e, tree : 'b * 'a avl) : 'a avl =
+  if(isEmpty(tree))
+  then rooting((e, 1), empty(), empty())
+
+  else
+    (
+      let ((v, h), g, d) : (('a * int) * 'a avl * 'a avl) =
+        ((getValue(tree), getHeight(tree)), lson(tree), rson(tree)) in
+
+      if(e < v)
+      then reequilibrer_stats(getNewHeight(rooting((v, h), ajt_avl_stats(e, g), d)))
+
+      else if(e > v)
+      then reequilibrer_stats(getNewHeight(rooting((v, h), g, ajt_avl_stats(e, d))))
+
+      else tree
+    )
+;;
+
+let avl_rndSeries_create(treeSize, seriesLen : int * int) : int =
+
+  Random.self_init();
+
+  let randAVL : int avl ref = ref (empty()) in
+  let fillerCount : int ref = ref treeSize in
+
+  while(!fillerCount > 0) do
+    let randLowerBound : int = Random.int 1001 in
+    let len : int = if(seriesLen<=0) then Random.int 101 else seriesLen in
+
+    for i=1 to len do
+      if(!fillerCount > 0)
+      then (
+        randAVL := ajt_avl_stats(randLowerBound+(i-1), !randAVL);
+        fillerCount := !fillerCount - 1;
+      )
+    done;
+    
+  done;
+
+  !nbRots
+;;
+
+let ajtNbRotsAvg(sampleSize, treeSize, seriesLenMode : int * int * char) : float =
+
+  let sum : float ref = ref 0. in
+
+  for i=1 to sampleSize do
+    nbRots := 0;
+    match seriesLenMode with
+    | 'r' -> sum := !sum +. float_of_int(avl_rndSeries_create(treeSize, -1))
+    | 'f' -> sum := !sum +. float_of_int(avl_rndSeries_create(treeSize, 1))
+    | 'a' -> sum := !sum +. float_of_int(avl_rndSeries_create(treeSize, i))
+    | 'd' -> sum := !sum +. float_of_int(avl_rndSeries_create(treeSize, sampleSize-i))
+    | _ -> failwith("Wrong mode for series length... 'r' for random lengths, 'f' for fixed lengths, 'a' for ascending lengths, and 'd' for descending lengths."); 
+  done;
+
+  !sum /. float_of_int(sampleSize)
+;;
+
+
+
+(* Suppression *)
+
+let rec suppr_avl_stats(e, tree : 'b * 'a avl) : 'a avl =
+  if(isEmpty(tree))
+  then empty()
+
+  else
+    (
+      let ((v, h), g, d) : (('a * int) * 'a avl * 'a avl) =
+        ((getValue(tree), getHeight(tree)), lson(tree), rson(tree)) in
+
+      if(e < v)
+      then reequilibrer_stats(getNewHeight(rooting((v, h), suppr_avl_stats(e, g), d)))
+
+      else if(e > v)
+      then reequilibrer_stats(getNewHeight(rooting((v, h), g, suppr_avl_stats(e, d))))
+
+      else
+        (
+          if(isEmpty(d))
+          then g
+
+          else if(isEmpty(g))
+          then d
+
+          else reequilibrer_stats(getNewHeight(rooting(bstMax(g), avlDmax(g), d)))
+        )
+    )
+;;
+
+let suppr_rndSeries(treeSize, seriesLen : int * int) : int =
+
+  Random.self_init();
+
+  let randAVL : int avl ref = ref (empty()) in
+  let fillerCount : int ref = ref treeSize in
+  let randLowerBound : int ref = ref 0 in
+
+  while(!fillerCount > 0) do
+    let len : int = if(seriesLen<=0) then Random.int 101 else seriesLen in
+
+    randLowerBound := Random.int 1001;
+
+    for i=1 to len do
+      if(!fillerCount > 0)
+      then (
+        randAVL := ajt_avl(!randLowerBound+(i-1), !randAVL);
+        fillerCount := !fillerCount - 1;
+      )
+    done;
+
+  done;
+
+  (*show_int_avl(!randAVL);
+  print_newline();
+  print_newline();
+  print_string("Number to delete is: ");
+  print_int(!randLowerBound);
+  print_newline();*)
+  randAVL := suppr_avl_stats(!randLowerBound, !randAVL);
+  (*show_int_avl(!randAVL);*)
+  !nbRots
+;;
+
+(*let supprNbRotsAvg(sampleSize, treeSize, seriesLenMode : int * int * char) : float =
+
+  let sum : float ref = ref 0. in
+
+  for i=1 to sampleSize do
+    nbRots := 0;
+    match seriesLenMode with
+    | 'r' -> sum := !sum +. float_of_int(suppr_rndSeries(treeSize, -1))
+    | 'f' -> sum := !sum +. float_of_int(suppr_rndSeries(treeSize, 1))
+    | 'a' -> sum := !sum +. float_of_int(suppr_rndSeries(treeSize, i))
+    | 'd' -> sum := !sum +. float_of_int(suppr_rndSeries(treeSize, sampleSize-i))
+    | _ -> failwith("Wrong mode for series length... 'r' for random lengths, 'f' for fixed lengths, 'a' for ascending lengths, and 'd' for descending lengths."); 
+  done;
+
+  !sum /. float_of_int(sampleSize)
+;;*)

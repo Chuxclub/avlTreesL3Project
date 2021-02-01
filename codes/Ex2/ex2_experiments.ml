@@ -11,7 +11,6 @@
 open Btree;;
 
 #directory "../../librairies/modules_etu/utils/";;
-#use "utils.ml";;
 #use "treeUtils.ml";;
 
 #directory "../../librairies/modules_etu/bst/";;
@@ -137,3 +136,11 @@ seekGraph(64);;
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
+
+(* AJOUT *)
+ajtNbRotsAvg(100, 100, 'f');;
+
+
+(* SUPPRESSION *)
+suppr_rndSeries(100, 10);;
+nbRots := 0;;
