@@ -10,7 +10,7 @@ open Btree;;
 #directory "../../librairies/modules_etu/utils/";;
 #use "treeUtils.ml";;
 
-#directory "../../../codes/Ex1/";;
+#directory "../../codes/Ex1/";;
 #use "ex1.ml";;
 
 

@@ -66,7 +66,6 @@ let avgAvgDesequilibre(nbAvgs, sampleSize, treeSize : int * int * int) : float =
 
 
 
-
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (3) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 let bst_rndSeries_create(treeSize, seriesLen : int * int) : int bst =
@@ -75,14 +74,15 @@ let bst_rndSeries_create(treeSize, seriesLen : int * int) : int bst =
   let fillerCount : int ref = ref treeSize in
 
   while(!fillerCount > 0) do
-    let randLowerBound : int = Random.int 1001 in
     let len : int = if(seriesLen<=0) then Random.int 101 else seriesLen in
-
+    let randLowerBound : int ref = ref (Random.int 101) in
+    
     for i=1 to len do
       if(!fillerCount > 0)
       then (
-        randABR := bst_linsert(!randABR, randLowerBound+(i-1));
+        randABR := bst_linsert(!randABR, !randLowerBound);
         fillerCount := !fillerCount - 1;
+        randLowerBound := Random.int(101) + !randLowerBound;
       )
     done;
     

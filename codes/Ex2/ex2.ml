@@ -247,19 +247,18 @@ let rec seek_avl(v,b : 'a * 'a avl) : 'a avl =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-let avl_rnd_create(bound, treeSize : int * int) : 'a avl =
-
-  Random.self_init();
+let avl_rnd_create(maxValueInNodes, treeSize : int * int) : 'a avl =
 
   let randABR : 'a avl ref = ref (empty()) in
   
   for i=1 to treeSize do
-    let randInt : int = Random.int bound in
+    let randInt : int = Random.int maxValueInNodes in
     randABR := ajt_avl(randInt, !randABR);
   done;
 
   !randABR
 ;;
+
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
@@ -343,20 +342,19 @@ let rec ajt_avl_stats(e, tree : 'b * 'a avl) : 'a avl =
 
 let avl_rndSeries_create(treeSize, seriesLen : int * int) : int =
 
-  Random.self_init();
-
   let randAVL : int avl ref = ref (empty()) in
   let fillerCount : int ref = ref treeSize in
 
   while(!fillerCount > 0) do
-    let randLowerBound : int = Random.int 1001 in
     let len : int = if(seriesLen<=0) then Random.int 101 else seriesLen in
+    let randLowerBound : int ref = ref(Random.int 1001) in
 
     for i=1 to len do
       if(!fillerCount > 0)
       then (
-        randAVL := ajt_avl_stats(randLowerBound+(i-1), !randAVL);
+        randAVL := ajt_avl_stats(!randLowerBound, !randAVL);
         fillerCount := !fillerCount - 1;
+        randLowerBound := Random.int(101) + !randLowerBound;
       )
     done;
     
@@ -364,6 +362,7 @@ let avl_rndSeries_create(treeSize, seriesLen : int * int) : int =
 
   !nbRots
 ;;
+
 
 let ajtNbRotsAvg(sampleSize, treeSize, seriesLenMode : int * int * char) : float =
 
