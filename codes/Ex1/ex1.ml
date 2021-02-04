@@ -1,5 +1,6 @@
 (* AUTEURS DE CE MODULE: Esteban Mauricio, Florian Legendre *)
 
+Random.self_init();;
 
 
 (* =========================================================================================== *)
@@ -11,10 +12,7 @@
 
 let bst_rnd_create(bound, treeSize : int * int) : int bst =
 
-  Random.self_init();
-
-  let empty_tree : int bst = empty() in
-  let randABR : int bst ref = ref empty_tree in
+  let randABR : int bst ref = ref (empty()) in
   
   for i=1 to treeSize do
     let randInt : int = Random.int bound in
@@ -73,10 +71,7 @@ let avgAvgDesequilibre(nbAvgs, sampleSize, treeSize : int * int * int) : float =
 
 let bst_rndSeries_create(treeSize, seriesLen : int * int) : int bst =
 
-  Random.self_init();
-
-  let empty_tree : int bst = empty() in
-  let randABR : int bst ref = ref empty_tree in
+  let randABR : int bst ref = ref (empty()) in
   let fillerCount : int ref = ref treeSize in
 
   while(!fillerCount > 0) do

@@ -43,3 +43,15 @@ let chrono(func, args : ('a -> 'b) * ('c * 'c avl)) : float =
   Sys.time() -. start_chrono
 ;;
 
+let avgAvlOp(avlOp, sampleSize, treeSize : (('a * 'a avl) -> 'c) * int * int) : float =
+
+  let dummyAVL : 'a avl = avl_rnd_create(10000000, treeSize) in
+  let sum : float ref = ref 0. in
+
+  for i=1 to sampleSize do
+    let randInt : int = Random.int 10000000 in
+    sum := !sum +. chrono(avlOp, (randInt, dummyAVL));
+  done;
+
+  !sum /. float_of_int(sampleSize)
+;;

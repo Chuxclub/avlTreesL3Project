@@ -98,7 +98,7 @@ deseqList(deleteTest);;
 
 let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
 show_int_avl(otherdummy);;
-show_int_avl(seek_avl(695, otherdummy));;
+show_int_avl(seek_avl(1, otherdummy));;
 
 
 
@@ -115,32 +115,30 @@ show_int_avl(seek_avl(695, otherdummy));;
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 (* Ajout: *)
-let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
+let otherdummy : 'a avl = avl_rnd_create(10000000, 10000);;
 show_int_avl(otherdummy);;
-chrono(ajt_avl, (564, otherdummy));;
-ajtGraph(64);;
+chrono(ajt_avl, (42, otherdummy));;
+avgAvlOp(ajt_avl, 100000, 256);;
+ajtGraph(500);;
 
 
 (* Suppression: *)
-let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
+let otherdummy : 'a avl = avl_rnd_create(1000, 10);;
 show_int_avl(otherdummy);;
 chrono(suppr_avl, (641, otherdummy));;
-supprGraph(64);;
+avgAvlOp(suppr_avl, 100000, 256);;
+supprGraph(500);;
 
 
 (* Recherche: *)
 let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
 show_int_avl(otherdummy);;
 chrono(seek_avl, (203, otherdummy));;
-seekGraph(64);;
+avgAvlOp(seek_avl, 100000, 256);;
+seekGraph(500);;
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 (* AJOUT *)
-ajtNbRotsAvg(100, 100, 'f');;
-
-
-(* SUPPRESSION *)
-suppr_rndSeries(100, 10);;
-nbRots := 0;;
+ajtNbRotsAvg(100, 100000, 'r');;

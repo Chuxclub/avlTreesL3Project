@@ -2,7 +2,7 @@
 
 
 
-let _NODES_VALUES_MAX : int = 1000;;
+let _NODES_VALUES_MAX : int = 10000;;
 
 (* ============================================================================================= *)
 (* =========================================== AJOUT =========================================== *)
@@ -61,25 +61,24 @@ let ajtGraph(n : int) : unit =
 let supprChrono(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
   let tm : float array = arr_make(n+1, 0.0) in
-  
-  let emptyTree : 'a t_btree = empty() in
-  let t : 'a t_btree ref = ref emptyTree in
+  let avlTest : 'a t_btree ref = ref (empty()) in
     (
-    for j = 1 to n
-    do
-      let randInt : int = Random.int _NODES_VALUES_MAX in
-      t := avl_rnd_create(_NODES_VALUES_MAX, j);
-      tm.(j) <- Sys.time() ;
-      ignore(suppr_avl(randInt, !t)) ; 
-      tm.(j) <- Sys.time() -. tm.(j);
-      ind.(j) <- float_of_int(j) ;
-    done ;
-    (tm, ind) ;
+      for j = 1 to n
+      do
+        let randIntAjt : int = Random.int _NODES_VALUES_MAX in
+        let randIntSuppr : int = Random.int _NODES_VALUES_MAX in
+        avlTest := ajt_avl(randIntAjt, !avlTest);
+        
+        tm.(j) <- Sys.time() ;
+        ignore(suppr_avl(randIntSuppr, !avlTest)) ; 
+        tm.(j) <- Sys.time() -. tm.(j);
+        ind.(j) <- float_of_int(j) ;
+      done ;
+      (tm, ind) ;
     )
 ;;
 
 let supprGraph(n : int) : unit =
-
   let (value, ind) : float array * float array = supprChrono(n) in
   let rep : t_rep = {orx = 50; ory = 50; extx = 900; exty = 500} in
   let close : char ref = ref 'o' in
@@ -111,13 +110,16 @@ let supprGraph(n : int) : unit =
 let seekChrono(n : int) : float array * float array = 
   let ind : float array = arr_make(n+1, 0.0) in
   let tm : float array = arr_make(n + 1, 0.0) in
-  let t : 'a t_btree ref = ref (empty()) in
+  let avlTest : 'a t_btree ref = ref (empty()) in
     (
     for j = 1 to n
     do
-      t := avl_rnd_create(_NODES_VALUES_MAX, j);
+      let randIntAjt : int = Random.int _NODES_VALUES_MAX in
+      let randIntSeek : int = Random.int _NODES_VALUES_MAX in
+      avlTest := ajt_avl(randIntAjt, !avlTest);
+        
       tm.(j) <- Sys.time();
-      ignore(seek_avl(42, !t)); 
+      ignore(seek_avl(randIntSeek, !avlTest)); 
       tm.(j) <- Sys.time() -. tm.(j);
       ind.(j) <- float_of_int(j) ;
     done ;
