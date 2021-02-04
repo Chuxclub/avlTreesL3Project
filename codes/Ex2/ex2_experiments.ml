@@ -23,7 +23,7 @@ open Btree;;
 #use "avlExperimentsUtils.ml";;
 #use "avlGraphicsUtils.ml";;
 
-
+Random.self_init();;
 
 
 (* ============================================================================================= *)
@@ -76,6 +76,7 @@ show_int_avl(unbalancedt1);;
 desequilibre(unbalancedt1);;
 desequilibre(lson(lson(unbalancedt1)));;
 show_int_avl(reequilibrer(unbalancedt1));;
+deseqList(reequilibrer(unbalancedt1));;
 
 
 
@@ -115,11 +116,14 @@ show_int_avl(seek_avl(1, otherdummy));;
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : Complexité des opérations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
 (* Ajout: *)
-let otherdummy : 'a avl = avl_rnd_create(10000000, 10000);;
+let otherdummy : 'a avl = avl_rnd_create(1000, 20);;
 show_int_avl(otherdummy);;
 chrono(ajt_avl, (42, otherdummy));;
 avgAvlOp(ajt_avl, 100000, 256);;
-ajtGraph(500);;
+plotGraph(ajt_avl, 1000);;
+
+
+
 
 
 (* Suppression: *)
@@ -127,7 +131,7 @@ let otherdummy : 'a avl = avl_rnd_create(1000, 10);;
 show_int_avl(otherdummy);;
 chrono(suppr_avl, (641, otherdummy));;
 avgAvlOp(suppr_avl, 100000, 256);;
-supprGraph(500);;
+plotGraph(suppr_avl, 1000);;
 
 
 (* Recherche: *)
@@ -135,7 +139,7 @@ let otherdummy : 'a avl = avl_rnd_create(1000, 30);;
 show_int_avl(otherdummy);;
 chrono(seek_avl, (203, otherdummy));;
 avgAvlOp(seek_avl, 100000, 256);;
-seekGraph(500);;
+plotGraph(seek_avl, 1000);;
 
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~ (2 : Sous-suites & nombre moyen de rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~ *)

@@ -345,15 +345,27 @@ let avl_rndSeries_create(treeSize, seriesLen : int * int) : int =
   let randAVL : int avl ref = ref (empty()) in
   let fillerCount : int ref = ref treeSize in
 
+  (* Tant que l'arbre n'est pas rempli on génère des sous-suites d'entiers ordonnés
+     qu'on ajoute dans l'arbre: *)
   while(!fillerCount > 0) do
     let len : int = if(seriesLen<=0) then Random.int 101 else seriesLen in
     let randLowerBound : int ref = ref(Random.int 1001) in
 
+    (* On boucle jusqu'à la longueur de la sous-suite: *)
     for i=1 to len do
+
+      (* Si l'arbre est rempli avant d'arriver au bout de la sous-suite, ce test 
+         garantit qu'aucun ajout supplémentaire ne sera fait: *) 
       if(!fillerCount > 0)
       then (
+
+        (* ajt_avl_stats compte le nombre de rotations qui a eu lieu lors de l'ajout:  *)
         randAVL := ajt_avl_stats(!randLowerBound, !randAVL);
+
+        (* On remplit l'arbre... À chaque ajout de noeud on décrémente: *)
         fillerCount := !fillerCount - 1;
+
+        (* Nos entiers sont croissants mais choisis aléatoirement: *)
         randLowerBound := Random.int(101) + !randLowerBound;
       )
     done;

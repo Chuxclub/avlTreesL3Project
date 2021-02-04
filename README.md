@@ -1,6 +1,5 @@
-======================================================================================================
-================ Projet d'expériences et rapports d'expériences sur les ABR et les AVL ===============
-======================================================================================================
+#Projet d'expériences et rapports d'expériences sur les ABR et les AVL
+
 
 Réalisé par Florian Legendre et Esteban Mauricio.
 
