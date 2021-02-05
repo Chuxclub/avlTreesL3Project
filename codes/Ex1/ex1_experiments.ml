@@ -56,7 +56,8 @@ avgAvgSeriesDesequilibre(100, 100, 100, 'd');;
 
 (* 
    Compte-rendu d'expérimentation : 
-   https://fr.overleaf.com/read/jsvdspcwzjjd
+   - Dans ce projet: ../rapport.pdf
+   - En ligne: https://fr.overleaf.com/read/jsvdspcwzjjd
  *)
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)

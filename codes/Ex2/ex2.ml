@@ -45,7 +45,6 @@ let desequilibre(tree : 'a avl) : int =
 
 (* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (1 : rotations) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *)
 
-
 let rg(t : 'a avl) : 'a avl =
   if(isEmpty(t) || isEmpty(rson(t)))
   then failwith("Tree or right subtree is empty. Function rg can't continue")
@@ -358,7 +357,6 @@ let avl_rndSeries_create(treeSize, seriesLen : int * int) : int =
          garantit qu'aucun ajout supplémentaire ne sera fait: *) 
       if(!fillerCount > 0)
       then (
-
         (* ajt_avl_stats compte le nombre de rotations qui a eu lieu lors de l'ajout:  *)
         randAVL := ajt_avl_stats(!randLowerBound, !randAVL);
 
