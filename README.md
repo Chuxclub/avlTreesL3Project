@@ -3,7 +3,7 @@
 Réalisé par Florian Legendre et Esteban Mauricio.
 
 
-## L'architecture de dossier de ce projet est construite de la manière suivante:
+## L'architecture de dossiers de ce projet est construite de la manière suivante:
 
    - codes: contient les codes sources liés aux différents exercices
    - docs: contient le sujet du projet ainsi que des éléménts de recherches réalisés pour approfondir 
@@ -12,6 +12,8 @@ Réalisé par Florian Legendre et Esteban Mauricio.
                 modules_UP) ainsi que des modules de notre cru réalisés pour le projet (dans le dossier
                 modules_etu). Ces-derniers ne soient pas le coeur du projet (le cas échéant ils seraient
                 dans le dossier codes/).
+
+Pour une architecture exhaustive: voir la section "Architecture de dossiers de ce projet détaillée" plus loin dans ce README.
 
 
 ## Pour tester les différents éléments du projet:
@@ -26,7 +28,7 @@ Réalisé par Florian Legendre et Esteban Mauricio.
      plus lisible.
 
 
-## Architecture de dossier détaillée de ce projet:
+## Architecture de dossiers de ce projet détaillée:
 
 ```
 .
