@@ -3,7 +3,7 @@
 Réalisé par Florian Legendre et Esteban Mauricio.
 
 
-## L'architecture de dossier de ce projet est construite de la manière suivante:
+## L'architecture de dossiers de ce projet est construite de la manière suivante:
 
    - codes: contient les codes sources liés aux différents exercices
    - docs: contient le sujet du projet ainsi que des éléménts de recherches réalisés pour approfondir 
@@ -12,7 +12,9 @@ Réalisé par Florian Legendre et Esteban Mauricio.
                 modules_UP) ainsi que des modules de notre cru réalisés pour le projet (dans le dossier
                 modules_etu). Ces-derniers ne soient pas le coeur du projet (le cas échéant ils seraient
                 dans le dossier codes/).
-                
+
+Pour une architecture exhaustive: voir la section "Architecture de dossiers de ce projet détaillée" plus loin dans ce README.
+
 
 ## Pour tester les différents éléments du projet:
 
@@ -24,3 +26,139 @@ Réalisé par Florian Legendre et Esteban Mauricio.
    5. **Ne jamais se servir que de la version _experiments.ml**. En effet, nous avons opté pour une logique où un fichier servirait
      de librairie de fonctions tandis que l'autre de terrain expérimental pour ces fonctions. Cela aidait à rendre ce que nous faisions
      plus lisible.
+
+
+## Architecture de dossiers de ce projet détaillée:
+
+```
+.
+├── codes
+│   ├── Ex1
+│   │   ├── ex1_experiments.ml
+│   │   └── ex1.ml
+│   └── Ex2
+│       ├── ex2_experiments.ml
+│       ├── ex2.ml
+│       └── img
+│           ├── ajt2.png
+│           ├── ajt.png
+│           ├── seek.png
+│           └── suppr.png
+├── docs
+│   ├── recherches
+│   │   ├── avl
+│   │   │   ├── AVL_Tree_Example.gif
+│   │   │   └── AVL_tree.pdf
+│   │   ├── TP4_ABR
+│   │   │   ├── Ex1
+│   │   │   │   ├── bst.cmi
+│   │   │   │   ├── bst.cmo
+│   │   │   │   ├── bst_exercise.ml
+│   │   │   │   ├── bst.ml
+│   │   │   │   ├── btree.cmi
+│   │   │   │   └── btree.cmo
+│   │   │   ├── Ex2
+│   │   │   │   ├── bst.cmi
+│   │   │   │   ├── bst.cmo
+│   │   │   │   ├── bst.ml
+│   │   │   │   ├── btree.cmi
+│   │   │   │   ├── btree.cmo
+│   │   │   │   └── ex2.ml
+│   │   │   ├── Ex3
+│   │   │   │   ├── bst.cmi
+│   │   │   │   ├── bst.cmo
+│   │   │   │   ├── bst.ml
+│   │   │   │   ├── btree.cmi
+│   │   │   │   ├── btree.cmo
+│   │   │   │   └── ex3.ml
+│   │   │   └── tp4ap3l3info.pdf
+│   │   └── treeRotations
+│   │       ├── AVLTreeTutorial.rtf
+│   │       ├── Tree_Rebalancing.gif
+│   │       ├── Tree_rotation_animation_250x250.gif
+│   │       ├── Tree_rotation.pdf
+│   │       └── Tree_Rotations.gif
+│   └── sujet_projet.pdf
+├── librairies
+│   ├── modules_etu
+│   │   ├── avl
+│   │   │   ├── avlExperimentsUtils.ml
+│   │   │   └── avlGraphicsUtils.ml
+│   │   ├── bst
+│   │   │   └── bst.ml
+│   │   └── utils
+│   │       └── treeUtils.ml
+│   └── modules_UP
+│       ├── 4.02.1+ocp1
+│       │   ├── ap3queue.cmi
+│       │   ├── ap3queue.cmo
+│       │   ├── ap3stack.cmi
+│       │   ├── ap3stack.cmo
+│       │   ├── btree.cmi
+│       │   ├── btree.cmo
+│       │   ├── gtree.cmi
+│       │   ├── gtree.cmo
+│       │   ├── pointer.cmi
+│       │   └── pointer.cmo
+│       ├── 4.02.3
+│       │   ├── ap3queue.cmi
+│       │   ├── ap3queue.cmo
+│       │   ├── ap3stack.cmi
+│       │   ├── ap3stack.cmo
+│       │   ├── btree.cmi
+│       │   ├── btree.cmo
+│       │   ├── gtree.cmi
+│       │   ├── gtree.cmo
+│       │   ├── pointer.cmi
+│       │   └── pointer.cmo
+│       ├── 4.05.0
+│       │   ├── ap3queue.cmi
+│       │   ├── ap3queue.cmo
+│       │   ├── ap3stack.cmi
+│       │   ├── ap3stack.cmo
+│       │   ├── btree.cmi
+│       │   ├── btree.cmo
+│       │   ├── gtree.cmi
+│       │   ├── gtree.cmo
+│       │   ├── pointer.cmi
+│       │   └── pointer.cmo
+│       ├── 4.08.1
+│       │   ├── ap3queue.cmi
+│       │   ├── ap3queue.cmo
+│       │   ├── ap3stack.cmi
+│       │   ├── ap3stack.cmo
+│       │   ├── btree.cmi
+│       │   ├── btree.cmo
+│       │   ├── gtree.cmi
+│       │   ├── gtree.cmo
+│       │   ├── pointer.cmi
+│       │   └── pointer.cmo
+│       ├── 4.10.0
+│       │   ├── ap3queue.cmi
+│       │   ├── ap3queue.cmo
+│       │   ├── ap3stack.cmi
+│       │   ├── ap3stack.cmo
+│       │   ├── btree.cmi
+│       │   ├── btree.cmo
+│       │   ├── gtree.cmi
+│       │   ├── gtree.cmo
+│       │   ├── pointer.cmi
+│       │   └── pointer.cmo
+│       ├── 4.11.1
+│       │   ├── ap3queue.cmi
+│       │   ├── ap3queue.cmo
+│       │   ├── ap3stack.cmi
+│       │   ├── ap3stack.cmo
+│       │   ├── btree.cmi
+│       │   ├── btree.cmo
+│       │   ├── gtree.cmi
+│       │   ├── gtree.cmo
+│       │   ├── pointer.cmi
+│       │   └── pointer.cmo
+│       └── graphiques
+│           ├── AP2TP1draw.ml
+│           ├── AP2util.ml
+│           └── graphique.ml
+├── rapport.pdf
+└── README.md
+```
