@@ -24,7 +24,7 @@ let graphDataMaker(avl_function, maxSize : ('a -> 'b) * int) : float array * flo
       done;
 
       (* On rentre la moyenne dans un tableau qui servira de valeurs en ordonnées,
-         treeSizes étant les valeurs en abscisses*)
+         treeSizes étant les valeurs en abscisses *)
       tm.(j) <- tm.(j) /. 100. ;
       treeSizes.(j) <- float_of_int(j) ;
       
